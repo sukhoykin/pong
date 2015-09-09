@@ -1,2 +1,2 @@
-# pong
-Pong Game
+# Pong
+Pong Video Game
