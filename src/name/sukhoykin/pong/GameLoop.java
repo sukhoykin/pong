@@ -1,10 +1,18 @@
 package name.sukhoykin.pong;
 
+/**
+ * Time-deterministic game loop with predefined fixed frame rate. By default
+ * loop runs in economy mode when simulation will sleep for free time after
+ * update and render. With disabled economy mode simulation will render as many
+ * times as possible.
+ * 
+ * @author vadim
+ */
 public class GameLoop {
 
-	private int dt;
+	private long dt;
 
-	private long t;
+	private long time;
 	private long start;
 
 	private boolean economy = true;
@@ -24,19 +32,19 @@ public class GameLoop {
 
 			stop = false;
 
-			t = 0;
+			time = 0;
 			start = System.currentTimeMillis();
 
 			while (!stop) {
 
 				while (elapsed() >= dt) {
-					
+
 					update();
-					t += dt;
+					time += dt;
 				}
 
 				if (elapsed() < dt) {
-					repaint();
+					render();
 				}
 
 				if (economy && elapsed() < dt) {
@@ -46,15 +54,22 @@ public class GameLoop {
 		}
 	}
 
+	public void stopSimulation() {
+
+		if (!stop) {
+			stop = true;
+		}
+	}
+
 	private long elapsed() {
-		return System.currentTimeMillis() - (start + t);
+		return System.currentTimeMillis() - (start + time);
 	}
 
 	private void update() {
-		
+
 	}
 
-	private void repaint() {
+	private void render() {
 
 	}
 
