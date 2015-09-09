@@ -8,7 +8,7 @@ package name.sukhoykin.pong;
  * 
  * @author vadim
  */
-public class GameLoop {
+public abstract class GameLoop {
 
 	private long dt;
 
@@ -19,7 +19,11 @@ public class GameLoop {
 	private boolean stop = true;
 
 	public GameLoop(int fps) {
-		dt = Math.round(1000 / fps);
+		dt = 1000 / fps;
+	}
+
+	public long getFrameTime() {
+		return dt;
 	}
 
 	public void setEconomyMode(boolean economy) {
@@ -27,6 +31,8 @@ public class GameLoop {
 	}
 
 	public void startSimulation() {
+
+		System.out.println("Simulation started");
 
 		if (stop) {
 
@@ -52,6 +58,8 @@ public class GameLoop {
 				}
 			}
 		}
+
+		System.out.println("Simulation stopped");
 	}
 
 	public void stopSimulation() {
@@ -65,15 +73,11 @@ public class GameLoop {
 		return System.currentTimeMillis() - (start + time);
 	}
 
-	private void update() {
+	public abstract void update();
 
-	}
+	public abstract void render();
 
-	private void render() {
-
-	}
-
-	private void economy() {
+	private final void economy() {
 
 		try {
 			Thread.sleep(dt - elapsed());
