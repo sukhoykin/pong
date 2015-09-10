@@ -29,6 +29,7 @@ public class Pong extends JFrame {
 			public void windowClosing(WindowEvent e) {
 
 				game.stopSimulation();
+				dispose();
 				System.exit(0);
 			}
 		});

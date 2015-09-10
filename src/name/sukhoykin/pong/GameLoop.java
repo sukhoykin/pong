@@ -19,18 +19,18 @@ public abstract class GameLoop<S extends GameState> {
 	private boolean stop = true;
 
 	private GameCanvas<S> canvas;
+	private S state;
 
 	public GameLoop(int fps, GameCanvas<S> canvas) {
+
 		dt = 1000 / fps;
+
 		this.canvas = canvas;
+		this.state = canvas.getState();
 	}
 
 	public GameCanvas<S> getCanvas() {
 		return canvas;
-	}
-
-	public long getFrameTime() {
-		return dt;
 	}
 
 	public void setEconomyMode(boolean economy) {
@@ -40,6 +40,7 @@ public abstract class GameLoop<S extends GameState> {
 	public void startSimulation() {
 
 		System.out.println("Simulation started");
+		canvas.onStartSimulation();
 
 		if (stop) {
 
@@ -52,12 +53,18 @@ public abstract class GameLoop<S extends GameState> {
 
 				while (elapsed() >= dt) {
 
-					update(canvas.getState());
+					state.updateTime = System.currentTimeMillis();
+					update(state, dt);
+					state.updateTime = System.currentTimeMillis() - state.updateTime;
+
 					time += dt;
 				}
 
 				if (elapsed() < dt) {
+
+					state.renderTime = System.currentTimeMillis();
 					canvas.render();
+					state.renderTime = System.currentTimeMillis() - state.renderTime;
 				}
 
 				if (economy && elapsed() < dt) {
@@ -80,7 +87,7 @@ public abstract class GameLoop<S extends GameState> {
 		return System.currentTimeMillis() - (start + time);
 	}
 
-	public abstract void update(S state);
+	public abstract void update(S state, long dt);
 
 	private final void economy() {
 

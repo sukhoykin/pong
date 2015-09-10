@@ -1,6 +1,6 @@
 package name.sukhoykin.pong;
 
-public class PongState implements GameState {
+public class PongState extends GameState {
 
-	public Ball ball = new Ball(new Vector(3, 0), new Vector(0, 320));
+	public Ball ball = new Ball(new Vector(3, 0), new Vector(20, 320));
 }

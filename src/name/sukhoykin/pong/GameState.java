@@ -1,5 +1,7 @@
 package name.sukhoykin.pong;
 
-public interface GameState {
+public class GameState {
 
+	public long updateTime;
+	public long renderTime;
 }
