@@ -2,26 +2,26 @@ package name.sukhoykin.pong;
 
 public class Vector {
 
-	private int x, y;
+	private float x, y;
 
-	public Vector(int x, int y) {
+	public Vector(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public void x(int x) {
+	public void x(float x) {
 		this.x = x;
 	}
 
-	public void y(int y) {
+	public void y(float y) {
 		this.y = y;
 	}
 
-	public int x() {
+	public float x() {
 		return x;
 	}
 
-	public int y() {
+	public float y() {
 		return y;
 	}
 }

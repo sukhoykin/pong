@@ -8,7 +8,7 @@ package name.sukhoykin.pong;
  * 
  * @author vadim
  */
-public abstract class GameLoop {
+public abstract class GameLoop<S extends GameState> {
 
 	private long dt;
 
@@ -18,8 +18,11 @@ public abstract class GameLoop {
 	private boolean economy = true;
 	private boolean stop = true;
 
-	public GameLoop(int fps) {
+	private GameCanvas<S> canvas;
+
+	public GameLoop(int fps, GameCanvas<S> canvas) {
 		dt = 1000 / fps;
+		this.canvas = canvas;
 	}
 
 	public long getFrameTime() {
@@ -45,12 +48,12 @@ public abstract class GameLoop {
 
 				while (elapsed() >= dt) {
 
-					update();
+					update(canvas.getState());
 					time += dt;
 				}
 
 				if (elapsed() < dt) {
-					render();
+					canvas.render();
 				}
 
 				if (economy && elapsed() < dt) {
@@ -73,9 +76,7 @@ public abstract class GameLoop {
 		return System.currentTimeMillis() - (start + time);
 	}
 
-	public abstract void update();
-
-	public abstract void render();
+	public abstract void update(S state);
 
 	private final void economy() {
 

@@ -1,23 +1,13 @@
 package name.sukhoykin.pong;
 
-import java.awt.Component;
-
-public class PongLoop extends GameLoop {
-
-	private Ball ball = new Ball(new Vector(3, 0), new Vector(0, 320));
+public class PongLoop extends GameLoop<PongState> {
 
 	public PongLoop() {
-		super(60);
+		super(60, new PongCanvas());
 	}
 
 	@Override
-	public void update() {
-	}
-
-	@Override
-	public void render() {
-		// g.setColor(Color.YELLOW);
-		// g.drawOval(ball.getPosition().x(), ball.getPosition().y(), 13, 13);
+	public void update(PongState state) {
 
 	}
 }
