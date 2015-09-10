@@ -9,7 +9,13 @@ public abstract class GameCanvas<S extends GameState> extends Canvas {
 	private S state;
 
 	public GameCanvas(S state) {
+		
 		this.state = state;
+		
+		setIgnoreRepaint(true);
+		setSize(1024, 768);
+		
+		//createBufferStrategy(2);
 	}
 
 	public S getState() {
@@ -17,6 +23,7 @@ public abstract class GameCanvas<S extends GameState> extends Canvas {
 	}
 	
 	public void render() {
+		
 		
 	}
 

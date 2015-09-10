@@ -25,6 +25,10 @@ public abstract class GameLoop<S extends GameState> {
 		this.canvas = canvas;
 	}
 
+	public GameCanvas<S> getCanvas() {
+		return canvas;
+	}
+
 	public long getFrameTime() {
 		return dt;
 	}
