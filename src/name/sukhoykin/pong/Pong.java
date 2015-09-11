@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 public class Pong extends JFrame {
 
 	public static void main(String[] args) {
-		new Pong();
+		new Pong().startGame(new PongLoop());
 	}
 
 	private GameLoop<?> game;
@@ -32,6 +32,7 @@ public class Pong extends JFrame {
 				dispose();
 				System.exit(0);
 			}
+
 		});
 
 		addKeyListener(new KeyAdapter() {
@@ -43,7 +44,6 @@ public class Pong extends JFrame {
 		});
 
 		setVisible(true);
-		startGame(new PongLoop());
 	}
 
 	public void startGame(GameLoop<?> game) {

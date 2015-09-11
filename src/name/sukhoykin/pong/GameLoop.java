@@ -1,10 +1,12 @@
 package name.sukhoykin.pong;
 
 /**
- * Time-deterministic game loop with predefined fixed frame rate. By default
- * loop runs in economy mode when simulation will sleep for free time after
- * update and render. With disabled economy mode simulation will render as many
- * times as possible.
+ * Time-deterministic game loop with predefined fixed frame rate and decoupled
+ * render stage.
+ * 
+ * By default loop runs in economy mode when simulation will sleep for free time
+ * after update and render. With disabled economy mode simulation will render as
+ * many times as possible.
  * 
  * @author vadim
  */
@@ -27,6 +29,8 @@ public abstract class GameLoop<S extends GameState> {
 
 		this.canvas = canvas;
 		this.state = canvas.getState();
+
+		state.stepTime = dt;
 	}
 
 	public GameCanvas<S> getCanvas() {
@@ -39,47 +43,40 @@ public abstract class GameLoop<S extends GameState> {
 
 	public void startSimulation() {
 
-		System.out.println("Simulation started");
-		canvas.onStartSimulation();
-
 		if (stop) {
 
 			stop = false;
 
-			time = 0;
-			start = System.currentTimeMillis();
+			System.out.println("Simulation started");
+			canvas.onStartSimulation();
 
-			while (!stop) {
+			loop();
 
-				while (elapsed() >= dt) {
-
-					state.updateTime = System.currentTimeMillis();
-					update(state, dt);
-					state.updateTime = System.currentTimeMillis() - state.updateTime;
-
-					time += dt;
-				}
-
-				if (elapsed() < dt) {
-
-					state.renderTime = System.currentTimeMillis();
-					canvas.render();
-					state.renderTime = System.currentTimeMillis() - state.renderTime;
-				}
-
-				if (economy && elapsed() < dt) {
-					economy();
-				}
-			}
+			System.out.println("Simulation stopped");
 		}
-
-		System.out.println("Simulation stopped");
 	}
 
-	public void stopSimulation() {
+	private void loop() {
 
-		if (!stop) {
-			stop = true;
+		time = 0;
+		start = System.currentTimeMillis();
+
+		state.startTime = start;
+		state.updateFrame = 1;
+
+		while (!stop) {
+
+			while (elapsed() >= dt) {
+				update();
+			}
+
+			if (elapsed() < dt) {
+				render();
+			}
+
+			if (economy && elapsed() < dt) {
+				economy();
+			}
 		}
 	}
 
@@ -87,13 +84,54 @@ public abstract class GameLoop<S extends GameState> {
 		return System.currentTimeMillis() - (start + time);
 	}
 
-	public abstract void update(S state, long dt);
+	private void update() {
 
-	private final void economy() {
+		long start = System.currentTimeMillis();
+
+		update(state, dt);
+		time += dt;
+
+		state.updateTime = System.currentTimeMillis() - start;
+		state.updateFrame++;
+
+		long elapsed = (System.currentTimeMillis() - this.start) / 1000;
+
+		if (elapsed > 0) {
+			state.updateFreq = state.updateFrame / elapsed;
+		}
+
+		state.simulationTime = time;
+	}
+
+	private void render() {
+
+		long start = System.currentTimeMillis();
+
+		canvas.render();
+
+		state.renderTime = System.currentTimeMillis() - start;
+		state.renderFrame++;
+
+		long elapsed = (System.currentTimeMillis() - this.start) / 1000;
+
+		if (elapsed > 0) {
+			state.renderFreq = state.renderTime / elapsed;
+		}
+	}
+
+	private void economy() {
+
+		state.economy = dt - elapsed();
 
 		try {
 			Thread.sleep(dt - elapsed());
 		} catch (InterruptedException ignore) {
 		}
 	}
+
+	public void stopSimulation() {
+		stop = true;
+	}
+
+	public abstract void update(S state, long dt);
 }

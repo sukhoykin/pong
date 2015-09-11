@@ -15,9 +15,6 @@ public class PongCanvas extends GameCanvas<PongState> {
 
 		g.clearRect(0, 0, 1024, 768);
 
-		g.setColor(Color.WHITE);
-
-		g.drawString("updateTime: " + state.updateTime, 10, 10);
-		g.drawString("renderTime: " + state.renderTime, 10, 30);
+		
 	}
 }
