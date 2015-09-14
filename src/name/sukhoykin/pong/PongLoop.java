@@ -10,6 +10,6 @@ public class PongLoop extends GameLoop<PongState> {
 
 	@Override
 	public void update(PongState state, long dt) {
-
+		
 	}
 }

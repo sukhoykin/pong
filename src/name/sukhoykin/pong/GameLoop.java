@@ -44,17 +44,19 @@ public abstract class GameLoop<S extends GameState> {
 			stop = false;
 
 			System.out.println("Simulation started");
-
 			loop();
-
 			System.out.println("Simulation stopped");
 		}
+	}
+
+	public void stopSimulation() {
+		stop = true;
 	}
 
 	private void loop() {
 
 		time = 0;
-		start = System.currentTimeMillis();
+		start = now();
 
 		while (!stop) {
 
@@ -72,22 +74,27 @@ public abstract class GameLoop<S extends GameState> {
 		}
 	}
 
+	private long now() {
+		return System.currentTimeMillis();
+	}
+
 	private long elapsed() {
-		return System.currentTimeMillis() - (start + time);
+		return now() - (start + time);
 	}
 
 	private void update() {
 
-		long start = System.currentTimeMillis();
+		long start = now();
 
 		update(state, dt);
 
 		time += dt;
 
-		state.updateTime = System.currentTimeMillis() - start;
+		state.updateTime = now() - start;
+		state.updateMax = state.updateTime > state.updateMax ? state.updateTime : state.updateMax;
 		state.updateFrame++;
 
-		long elapsed = System.currentTimeMillis() - this.start;
+		long elapsed = now() - this.start;
 
 		if (elapsed > 0) {
 			state.updateFreq = (float) state.updateFrame / elapsed * 1000;
@@ -98,14 +105,15 @@ public abstract class GameLoop<S extends GameState> {
 
 	private void render() {
 
-		long start = System.currentTimeMillis();
+		long start = now();
 
 		canvas.render(state);
 
-		state.renderTime = System.currentTimeMillis() - start;
+		state.renderTime = now() - start;
+		state.renderMax = state.renderTime > state.renderMax ? state.renderTime : state.renderMax;
 		state.renderFrame++;
 
-		long elapsed = System.currentTimeMillis() - this.start;
+		long elapsed = now() - this.start;
 
 		if (elapsed > 0) {
 			state.renderFreq = (float) state.renderFrame / elapsed * 1000;
@@ -120,10 +128,6 @@ public abstract class GameLoop<S extends GameState> {
 			Thread.sleep(dt - elapsed());
 		} catch (InterruptedException ignore) {
 		}
-	}
-
-	public void stopSimulation() {
-		stop = true;
 	}
 
 	public abstract void update(S state, long dt);

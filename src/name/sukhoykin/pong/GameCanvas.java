@@ -18,10 +18,6 @@ public abstract class GameCanvas<S extends GameState> {
 
 	public final void render(S state) {
 
-		// do {
-
-		// do {
-
 		BufferStrategy buffer = canvas.getBufferStrategy();
 		Graphics2D g = (Graphics2D) buffer.getDrawGraphics();
 
@@ -40,16 +36,11 @@ public abstract class GameCanvas<S extends GameState> {
 			System.out.println("contentsRestored");
 		}
 
-		// } while (buffer.contentsRestored());
-
 		buffer.show();
 
 		if (buffer.contentsLost()) {
 			System.out.println("contentsLost");
 		}
-
-		// } while (buffer.contentsLost());
-
 	}
 
 	public abstract void render(Graphics2D g, S state);
@@ -66,10 +57,12 @@ public abstract class GameCanvas<S extends GameState> {
 		i++;
 		g.drawString("updateFrame: " + state.updateFrame, 10, y * ++i);
 		g.drawString("updateTime: " + state.updateTime + " ms", 10, y * ++i);
+		g.drawString("updateMax: " + state.updateMax + " ms", 10, y * ++i);
 		g.drawString("updateFreq: " + (long) state.updateFreq + " fps", 10, y * ++i);
 		i++;
 		g.drawString("renderFrame: " + state.renderFrame, 10, y * ++i);
 		g.drawString("renderTime: " + state.renderTime + " ms", 10, y * ++i);
+		g.drawString("renderMax: " + state.renderMax + " ms", 10, y * ++i);
 		g.drawString("renderFreq: " + (long) state.renderFreq + " fps", 10, y * ++i);
 		i++;
 		g.drawString("economy: " + state.economy + " ms", 10, y * ++i);

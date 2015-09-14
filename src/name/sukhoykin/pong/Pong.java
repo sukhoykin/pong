@@ -12,9 +12,7 @@ import javax.swing.JFrame;
 public class Pong extends JFrame {
 
 	public static void main(String[] args) {
-
-		Pong pong = new Pong();
-		pong.startGame(new PongLoop(pong.canvas));
+		new Pong().start();
 	}
 
 	private Canvas canvas;
@@ -23,13 +21,9 @@ public class Pong extends JFrame {
 	public Pong() {
 
 		setTitle("Pong");
-		setSize(1024, 768);
-		setLocationRelativeTo(null);
 		setIgnoreRepaint(true);
 
 		canvas = new Canvas();
-
-		// canvas.setBackground(Color.BLACK);
 		canvas.setIgnoreRepaint(true);
 		canvas.setSize(1024, 768);
 
@@ -57,7 +51,12 @@ public class Pong extends JFrame {
 			}
 		});
 
+		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+
+	public void start() {
+		startGame(new PongLoop(canvas));
 	}
 
 	public void startGame(GameLoop<?> game) {
