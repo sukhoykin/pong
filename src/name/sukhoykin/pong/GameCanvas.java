@@ -27,6 +27,7 @@ public abstract class GameCanvas<S extends GameState> {
 		try {
 
 			render(g, state);
+			renderState(g, state);
 
 		} finally {
 			g.dispose();
@@ -45,7 +46,7 @@ public abstract class GameCanvas<S extends GameState> {
 
 	public abstract void render(Graphics2D g, S state);
 
-	public void renderState(Graphics2D g, S state) {
+	private void renderState(Graphics2D g, S state) {
 
 		g.setColor(Color.WHITE);
 
