@@ -1,9 +1,11 @@
 package name.sukhoykin.pong;
 
+import java.awt.Canvas;
+
 public class PongLoop extends GameLoop<PongState> {
 
-	public PongLoop() {
-		super(60, new PongCanvas());
+	public PongLoop(Canvas canvas) {
+		super(new PongCanvas(canvas), new PongState(), 60);
 	}
 
 	@Override

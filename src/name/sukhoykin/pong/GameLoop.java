@@ -23,18 +23,14 @@ public abstract class GameLoop<S extends GameState> {
 	private GameCanvas<S> canvas;
 	private S state;
 
-	public GameLoop(int fps, GameCanvas<S> canvas) {
+	public GameLoop(GameCanvas<S> canvas, S state, int fps) {
+
+		this.canvas = canvas;
+		this.state = state;
 
 		dt = 1000 / fps;
 
-		this.canvas = canvas;
-		this.state = canvas.getState();
-
 		state.stepTime = dt;
-	}
-
-	public GameCanvas<S> getCanvas() {
-		return canvas;
 	}
 
 	public void setEconomyMode(boolean economy) {
@@ -48,7 +44,6 @@ public abstract class GameLoop<S extends GameState> {
 			stop = false;
 
 			System.out.println("Simulation started");
-			canvas.onStartSimulation();
 
 			loop();
 
@@ -60,9 +55,6 @@ public abstract class GameLoop<S extends GameState> {
 
 		time = 0;
 		start = System.currentTimeMillis();
-
-		state.startTime = start;
-		state.updateFrame = 1;
 
 		while (!stop) {
 
@@ -89,15 +81,16 @@ public abstract class GameLoop<S extends GameState> {
 		long start = System.currentTimeMillis();
 
 		update(state, dt);
+
 		time += dt;
 
 		state.updateTime = System.currentTimeMillis() - start;
 		state.updateFrame++;
 
-		long elapsed = (System.currentTimeMillis() - this.start) / 1000;
+		long elapsed = System.currentTimeMillis() - this.start;
 
 		if (elapsed > 0) {
-			state.updateFreq = state.updateFrame / elapsed;
+			state.updateFreq = (float) state.updateFrame / elapsed * 1000;
 		}
 
 		state.simulationTime = time;
@@ -107,15 +100,15 @@ public abstract class GameLoop<S extends GameState> {
 
 		long start = System.currentTimeMillis();
 
-		canvas.render();
+		canvas.render(state);
 
 		state.renderTime = System.currentTimeMillis() - start;
 		state.renderFrame++;
 
-		long elapsed = (System.currentTimeMillis() - this.start) / 1000;
+		long elapsed = System.currentTimeMillis() - this.start;
 
 		if (elapsed > 0) {
-			state.renderFreq = state.renderTime / elapsed;
+			state.renderFreq = (float) state.renderFrame / elapsed * 1000;
 		}
 	}
 

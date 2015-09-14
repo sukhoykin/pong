@@ -1,5 +1,6 @@
 package name.sukhoykin.pong;
 
+import java.awt.Canvas;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -11,9 +12,12 @@ import javax.swing.JFrame;
 public class Pong extends JFrame {
 
 	public static void main(String[] args) {
-		new Pong().startGame(new PongLoop());
+
+		Pong pong = new Pong();
+		pong.startGame(new PongLoop(pong.canvas));
 	}
 
+	private Canvas canvas;
 	private GameLoop<?> game;
 
 	public Pong() {
@@ -22,6 +26,15 @@ public class Pong extends JFrame {
 		setSize(1024, 768);
 		setLocationRelativeTo(null);
 		setIgnoreRepaint(true);
+
+		canvas = new Canvas();
+
+		// canvas.setBackground(Color.BLACK);
+		canvas.setIgnoreRepaint(true);
+		canvas.setSize(1024, 768);
+
+		add(canvas);
+		pack();
 
 		addWindowListener(new WindowAdapter() {
 
@@ -40,6 +53,7 @@ public class Pong extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				System.out.println("KeyCode: " + e.getKeyCode());
+				game.stopSimulation();
 			}
 		});
 
@@ -50,13 +64,9 @@ public class Pong extends JFrame {
 
 		if (this.game != null) {
 			this.game.stopSimulation();
-			remove(this.game.getCanvas());
 		}
 
 		this.game = game;
-
-		add(game.getCanvas());
-		pack();
 
 		game.startSimulation();
 	}

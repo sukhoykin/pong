@@ -6,68 +6,72 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 
-@SuppressWarnings("serial")
-public abstract class GameCanvas<S extends GameState> extends Canvas {
+public abstract class GameCanvas<S extends GameState> {
 
-	private S state;
-	private BufferStrategy buffer;
+	private Canvas canvas;
 
-	public GameCanvas(S state) {
+	public GameCanvas(Canvas canvas) {
 
-		this.state = state;
-
-		setBackground(Color.BLACK);
-		setIgnoreRepaint(true);
-		setSize(1024, 768);
+		this.canvas = canvas;
+		canvas.createBufferStrategy(2);
 	}
 
-	public S getState() {
-		return state;
-	}
+	public final void render(S state) {
 
-	public void onStartSimulation() {
+		// do {
 
-		createBufferStrategy(2);
-		buffer = getBufferStrategy();
-	}
+		// do {
 
-	public void render() {
+		BufferStrategy buffer = canvas.getBufferStrategy();
+		Graphics2D g = (Graphics2D) buffer.getDrawGraphics();
 
-		do {
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-			do {
+		try {
 
-				Graphics2D g = (Graphics2D) buffer.getDrawGraphics();
+			render(g, state);
 
-				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		} finally {
+			g.dispose();
+		}
 
-				try {
-					
-					render(state, g);
-					renderState(g);
-					
-				} finally {
-					g.dispose();
-				}
+		if (buffer.contentsRestored()) {
+			System.out.println("contentsRestored");
+		}
 
-			} while (buffer.contentsRestored());
+		// } while (buffer.contentsRestored());
 
-			buffer.show();
+		buffer.show();
 
-		} while (buffer.contentsLost());
+		if (buffer.contentsLost()) {
+			System.out.println("contentsLost");
+		}
+
+		// } while (buffer.contentsLost());
 
 	}
 
-	public abstract void render(S state, Graphics2D g);
-	
-	private void renderState(Graphics2D g) {
-		
+	public abstract void render(Graphics2D g, S state);
+
+	public void renderState(Graphics2D g, S state) {
+
 		g.setColor(Color.WHITE);
 
-		g.drawString("updateTime: " + state.updateTime, 10, 10);
-		g.drawString("renderTime: " + state.renderTime, 10, 30);
-		
-		g.fillOval(100, 100, 100, 100);
+		int i = 0;
+		int y = g.getFontMetrics().getHeight();
+
+		g.drawString("stepTime: " + state.stepTime + " ms", 10, y * ++i);
+		g.drawString("simulationTime: " + state.simulationTime + " ms", 10, y * ++i);
+		i++;
+		g.drawString("updateFrame: " + state.updateFrame, 10, y * ++i);
+		g.drawString("updateTime: " + state.updateTime + " ms", 10, y * ++i);
+		g.drawString("updateFreq: " + (long) state.updateFreq + " fps", 10, y * ++i);
+		i++;
+		g.drawString("renderFrame: " + state.renderFrame, 10, y * ++i);
+		g.drawString("renderTime: " + state.renderTime + " ms", 10, y * ++i);
+		g.drawString("renderFreq: " + (long) state.renderFreq + " fps", 10, y * ++i);
+		i++;
+		g.drawString("economy: " + state.economy + " ms", 10, y * ++i);
 	}
 }
