@@ -1,5 +1,7 @@
 package name.sukhoykin.pong;
 
+import java.awt.event.KeyListener;
+
 /**
  * Time-deterministic game loop with predefined fixed frame rate and decoupled
  * render stage.
@@ -10,7 +12,7 @@ package name.sukhoykin.pong;
  * 
  * @author vadim
  */
-public abstract class GameLoop<S extends GameState> {
+public abstract class GameLoop<S extends GameState> implements KeyListener {
 
 	private long dt;
 
@@ -25,10 +27,10 @@ public abstract class GameLoop<S extends GameState> {
 
 	public GameLoop(GameCanvas<S> canvas, S state, int fps) {
 
+		dt = 1000 / fps;
+
 		this.canvas = canvas;
 		this.state = state;
-
-		dt = 1000 / fps;
 
 		state.stepTime = dt;
 	}
@@ -43,35 +45,28 @@ public abstract class GameLoop<S extends GameState> {
 
 			stop = false;
 
-			System.out.println("Simulation started");
-			loop();
-			System.out.println("Simulation stopped");
+			time = 0;
+			start = now();
+
+			while (!stop) {
+
+				while (elapsed() >= dt) {
+					update();
+				}
+
+				if (elapsed() < dt) {
+					render();
+				}
+
+				if (economy && elapsed() < dt) {
+					economy();
+				}
+			}
 		}
 	}
 
 	public void stopSimulation() {
 		stop = true;
-	}
-
-	private void loop() {
-
-		time = 0;
-		start = now();
-
-		while (!stop) {
-
-			while (elapsed() >= dt) {
-				update();
-			}
-
-			if (elapsed() < dt) {
-				render();
-			}
-
-			if (economy && elapsed() < dt) {
-				economy();
-			}
-		}
 	}
 
 	private long now() {
@@ -131,4 +126,8 @@ public abstract class GameLoop<S extends GameState> {
 	}
 
 	public abstract void update(S state, long dt);
+
+	public abstract void suspend();
+
+	public abstract void resume();
 }

@@ -33,15 +33,7 @@ public abstract class GameCanvas<S extends GameState> {
 			g.dispose();
 		}
 
-		if (buffer.contentsRestored()) {
-			System.out.println("contentsRestored");
-		}
-
 		buffer.show();
-
-		if (buffer.contentsLost()) {
-			System.out.println("contentsLost");
-		}
 	}
 
 	public abstract void render(Graphics2D g, S state);
