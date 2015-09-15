@@ -16,9 +16,9 @@ public class PongCanvas extends GameCanvas<PongState> {
 	public void render(Graphics2D g, PongState state) {
 
 		g.clearRect(0, 0, 1024, 768);
-		
-		int x = (int) state.updateFrame;
-		freq.getGraphics().drawLine(x, 768, x, 768 - (int) state.updateFreq);
+
+		int x = (int) state.loop.updateFrame;
+		freq.getGraphics().drawLine(x, 768, x, 768 - (int) state.loop.updateFreq);
 
 		g.drawImage(freq, 0, 0, null);
 	}

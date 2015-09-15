@@ -1,6 +1,9 @@
 package name.sukhoykin.pong;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Time-deterministic game loop with predefined fixed frame rate and decoupled
@@ -12,7 +15,7 @@ import java.awt.event.KeyListener;
  * 
  * @author vadim
  */
-public abstract class GameLoop<S extends GameState> implements KeyListener {
+public abstract class GameLoop<S extends GameState> implements Runnable, KeyListener {
 
 	private long dt;
 
@@ -20,10 +23,16 @@ public abstract class GameLoop<S extends GameState> implements KeyListener {
 	private long start;
 
 	private boolean economy = true;
+
 	private boolean stop = true;
+	private Thread thread;
 
 	private GameCanvas<S> canvas;
 	private S state;
+
+	private Set<Integer> keyPressed = new HashSet<Integer>();
+
+	private long benchmark;
 
 	public GameLoop(GameCanvas<S> canvas, S state, int fps) {
 
@@ -31,8 +40,6 @@ public abstract class GameLoop<S extends GameState> implements KeyListener {
 
 		this.canvas = canvas;
 		this.state = state;
-
-		state.stepTime = dt;
 	}
 
 	public void setEconomyMode(boolean economy) {
@@ -45,28 +52,48 @@ public abstract class GameLoop<S extends GameState> implements KeyListener {
 
 			stop = false;
 
-			time = 0;
-			start = now();
+			this.state.reset();
+			this.state.loop.stepTime = dt;
 
-			while (!stop) {
+			thread = new Thread(this);
+			thread.start();
+		}
+	}
 
-				while (elapsed() >= dt) {
-					update();
-				}
+	@Override
+	public void run() {
 
-				if (elapsed() < dt) {
-					render();
-				}
+		time = 0;
+		start = now();
 
-				if (economy && elapsed() < dt) {
-					economy();
-				}
+		while (!stop) {
+
+			while (elapsed() >= dt) {
+
+				input();
+				update();
+			}
+
+			if (elapsed() < dt) {
+				render();
+			}
+
+			if (economy && elapsed() < dt) {
+				economy();
 			}
 		}
 	}
 
 	public void stopSimulation() {
 		stop = true;
+	}
+
+	public void waitForStop() {
+
+		try {
+			thread.join();
+		} catch (InterruptedException ignore) {
+		}
 	}
 
 	private long now() {
@@ -77,57 +104,94 @@ public abstract class GameLoop<S extends GameState> implements KeyListener {
 		return now() - (start + time);
 	}
 
-	private void update() {
+	private void benchmark() {
+		benchmark = now();
+	}
 
-		long start = now();
+	private long benchtook() {
+		return now() - benchmark;
+	}
 
-		update(state, dt);
+	private float frequency(long frame) {
 
-		time += dt;
-
-		state.updateTime = now() - start;
-		state.updateMax = state.updateTime > state.updateMax ? state.updateTime : state.updateMax;
-		state.updateFrame++;
-
-		long elapsed = now() - this.start;
+		long elapsed = now() - start;
 
 		if (elapsed > 0) {
-			state.updateFreq = (float) state.updateFrame / elapsed * 1000;
+			return (float) frame / elapsed * 1000;
 		}
 
-		state.simulationTime = time;
+		return 0;
+	}
+
+	private void input() {
+
+		benchmark();
+		input(state, keyPressed);
+
+		state.loop.inputTime = benchtook();
+	}
+
+	private void update() {
+
+		benchmark();
+
+		update(state, dt);
+		time += dt;
+
+		state.loop.updateFrame++;
+		state.loop.updateTime = benchtook();
+		state.loop.updateFreq = frequency(state.loop.updateFrame);
+
+		state.loop.simulationTime = time;
 	}
 
 	private void render() {
 
-		long start = now();
+		benchmark();
 
 		canvas.render(state);
 
-		state.renderTime = now() - start;
-		state.renderMax = state.renderTime > state.renderMax ? state.renderTime : state.renderMax;
-		state.renderFrame++;
-
-		long elapsed = now() - this.start;
-
-		if (elapsed > 0) {
-			state.renderFreq = (float) state.renderFrame / elapsed * 1000;
-		}
+		state.loop.renderFrame++;
+		state.loop.renderTime = benchtook();
+		state.loop.renderFreq = frequency(state.loop.renderFrame);
 	}
 
 	private void economy() {
 
-		state.economy = dt - elapsed();
+		state.loop.economy = dt - elapsed();
 
 		try {
-			Thread.sleep(dt - elapsed());
+			Thread.sleep(state.loop.economy);
 		} catch (InterruptedException ignore) {
 		}
 	}
 
+	public abstract void input(S state, Set<Integer> keyPressed);
+
 	public abstract void update(S state, long dt);
 
-	public abstract void suspend();
+	public void suspend() {
+	}
 
-	public abstract void resume();
+	public void resume() {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		keyPressed.add(e.getKeyCode());
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
+		if (e.getKeyCode() == KeyEvent.VK_F3) {
+			state.renderLoopState = !state.renderLoopState;
+		}
+
+		keyPressed.remove(e.getKeyCode());
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
 }

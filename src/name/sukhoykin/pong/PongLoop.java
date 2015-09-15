@@ -2,6 +2,7 @@ package name.sukhoykin.pong;
 
 import java.awt.Canvas;
 import java.awt.event.KeyEvent;
+import java.util.Set;
 
 public class PongLoop extends GameLoop<PongState> {
 
@@ -10,31 +11,25 @@ public class PongLoop extends GameLoop<PongState> {
 	}
 
 	@Override
-	public void update(PongState state, long dt) {
-		
+	public void input(PongState state, Set<Integer> keyPressed) {
+
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		System.out.println("keyPressed: " + e.getKeyCode());
+	public void update(PongState state, long dt) {
+
+		try {
+			Thread.sleep(5l);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		System.out.println("keyReleased: " + e.getKeyCode());
-	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-	}
-
-	@Override
-	public void suspend() {
 		
-	}
 
-	@Override
-	public void resume() {
-		
+		super.keyReleased(e);
 	}
 }

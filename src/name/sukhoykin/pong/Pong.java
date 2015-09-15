@@ -7,7 +7,7 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
-public class Pong extends JFrame implements WindowListener, Runnable {
+public class Pong extends JFrame implements WindowListener {
 
 	public static void main(String[] args) {
 		new Pong().start();
@@ -48,13 +48,7 @@ public class Pong extends JFrame implements WindowListener, Runnable {
 		canvas.addKeyListener(game);
 
 		this.game = game;
-
-		new Thread(this).start();
-	}
-
-	@Override
-	public void run() {
-		game.startSimulation();
+		this.game.startSimulation();
 	}
 
 	@Override
@@ -64,7 +58,7 @@ public class Pong extends JFrame implements WindowListener, Runnable {
 
 	@Override
 	public void windowActivated(WindowEvent e) {
-		
+
 		if (game != null) {
 			game.resume();
 		}
@@ -79,6 +73,8 @@ public class Pong extends JFrame implements WindowListener, Runnable {
 	public void windowClosing(WindowEvent e) {
 
 		game.stopSimulation();
+		game.waitForStop();
+
 		dispose();
 		System.exit(0);
 	}

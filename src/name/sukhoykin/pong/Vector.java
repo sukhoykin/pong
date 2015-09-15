@@ -5,10 +5,14 @@ public class Vector {
 	public float x, y;
 
 	public Vector(float x, float y) {
+		set(x, y);
+	}
+
+	public void set(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
-/*
+
 	public void x(float x) {
 		this.x = x;
 	}
@@ -23,5 +27,5 @@ public class Vector {
 
 	public float y() {
 		return y;
-	}*/
+	}
 }

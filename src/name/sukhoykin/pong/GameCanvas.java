@@ -27,7 +27,10 @@ public abstract class GameCanvas<S extends GameState> {
 		try {
 
 			render(g, state);
-			renderState(g, state);
+
+			if (state.renderLoopState) {
+				renderState(g, state);
+			}
 
 		} finally {
 			g.dispose();
@@ -45,19 +48,19 @@ public abstract class GameCanvas<S extends GameState> {
 		int i = 0;
 		int y = g.getFontMetrics().getHeight();
 
-		g.drawString("stepTime: " + state.stepTime + " ms", 10, y * ++i);
-		g.drawString("simulationTime: " + state.simulationTime + " ms", 10, y * ++i);
+		g.drawString("stepTime: " + state.loop.stepTime + " ms", 10, y * ++i);
+		g.drawString("simulationTime: " + state.loop.simulationTime + " ms", 10, y * ++i);
 		i++;
-		g.drawString("updateFrame: " + state.updateFrame, 10, y * ++i);
-		g.drawString("updateTime: " + state.updateTime + " ms", 10, y * ++i);
-		g.drawString("updateMax: " + state.updateMax + " ms", 10, y * ++i);
-		g.drawString("updateFreq: " + (long) state.updateFreq + " fps", 10, y * ++i);
+		g.drawString("inputTime: " + state.loop.inputTime + " ms", 10, y * ++i);
 		i++;
-		g.drawString("renderFrame: " + state.renderFrame, 10, y * ++i);
-		g.drawString("renderTime: " + state.renderTime + " ms", 10, y * ++i);
-		g.drawString("renderMax: " + state.renderMax + " ms", 10, y * ++i);
-		g.drawString("renderFreq: " + (long) state.renderFreq + " fps", 10, y * ++i);
+		g.drawString("updateFrame: " + state.loop.updateFrame, 10, y * ++i);
+		g.drawString("updateTime: " + state.loop.updateTime + " ms", 10, y * ++i);
+		g.drawString("updateFreq: " + (long) state.loop.updateFreq + " fps", 10, y * ++i);
 		i++;
-		g.drawString("economy: " + state.economy + " ms", 10, y * ++i);
+		g.drawString("renderFrame: " + state.loop.renderFrame, 10, y * ++i);
+		g.drawString("renderTime: " + state.loop.renderTime + " ms", 10, y * ++i);
+		g.drawString("renderFreq: " + (long) state.loop.renderFreq + " fps", 10, y * ++i);
+		i++;
+		g.drawString("economy: " + state.loop.economy + " ms", 10, y * ++i);
 	}
 }

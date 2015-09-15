@@ -2,18 +2,28 @@ package name.sukhoykin.pong;
 
 public class GameState {
 
-	public long stepTime;
-	public long simulationTime;
+	public boolean renderLoopState = true;
+	public LoopState loop = new LoopState();
 
-	public long updateFrame;
-	public long updateTime;
-	public long updateMax;
-	public float updateFreq;
+	public void reset() {
+		loop = new LoopState();
+	}
 
-	public long renderFrame;
-	public long renderTime;
-	public long renderMax;
-	public float renderFreq;
-	
-	public long economy;
+	public class LoopState {
+
+		public long stepTime;
+		public long simulationTime;
+
+		public long inputTime;
+
+		public long updateFrame;
+		public long updateTime;
+		public float updateFreq;
+
+		public long renderFrame;
+		public long renderTime;
+		public float renderFreq;
+
+		public long economy;
+	}
 }
