@@ -2,8 +2,6 @@ package name.sukhoykin.pong;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Time-deterministic game loop with predefined fixed frame rate and decoupled
@@ -30,7 +28,7 @@ public abstract class GameLoop<S extends GameState> implements Runnable, KeyList
 	private GameCanvas<S> canvas;
 	private S state;
 
-	private Set<Integer> keyPressed = new HashSet<Integer>();
+	private boolean[] keyPressed = new boolean[256];
 
 	private long benchmark;
 
@@ -166,7 +164,7 @@ public abstract class GameLoop<S extends GameState> implements Runnable, KeyList
 		}
 	}
 
-	public abstract void input(S state, Set<Integer> keyPressed);
+	public abstract void input(S state, boolean[] keyPressed);
 
 	public abstract void update(S state, long dt);
 
@@ -178,7 +176,10 @@ public abstract class GameLoop<S extends GameState> implements Runnable, KeyList
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		keyPressed.add(e.getKeyCode());
+
+		if (e.getKeyCode() < keyPressed.length) {
+			keyPressed[e.getKeyCode()] = true;
+		}
 	}
 
 	@Override
@@ -188,7 +189,9 @@ public abstract class GameLoop<S extends GameState> implements Runnable, KeyList
 			state.renderLoopState = !state.renderLoopState;
 		}
 
-		keyPressed.remove(e.getKeyCode());
+		if (e.getKeyCode() < keyPressed.length) {
+			keyPressed[e.getKeyCode()] = false;
+		}
 	}
 
 	@Override
