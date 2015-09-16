@@ -59,7 +59,7 @@ public class Pong implements WindowListener {
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		loop.startScene(new PongScene(canvas));
+		startScene(new PongScene(canvas));
 	}
 
 	@Override

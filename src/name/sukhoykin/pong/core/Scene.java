@@ -18,7 +18,10 @@ public class Scene implements KeyListener, Input {
 
 	private List<Sprite> sprites = new ArrayList<Sprite>();
 
+	private boolean[] keyPressed = new boolean[256];
+
 	private LoopState state;
+	private boolean renderState = false;
 
 	public Scene(Canvas canvas) {
 		this.canvas = canvas;
@@ -38,7 +41,7 @@ public class Scene implements KeyListener, Input {
 	}
 
 	public void input() {
-		
+
 		for (Sprite sprite : sprites) {
 			sprite.input(this);
 		}
@@ -65,7 +68,9 @@ public class Scene implements KeyListener, Input {
 				sprite.render(g);
 			}
 
-			state.render(g);
+			if (renderState) {
+				state.render(g);
+			}
 
 		} finally {
 			g.dispose();
@@ -76,7 +81,7 @@ public class Scene implements KeyListener, Input {
 
 	@Override
 	public boolean isPressed(int keyCode) {
-		return false;
+		return keyPressed.length < keyCode ? keyPressed[keyCode] : false;
 	}
 
 	@Override
@@ -84,14 +89,28 @@ public class Scene implements KeyListener, Input {
 		return false;
 	}
 
+	private void setKeyPressed(int keyCode, boolean pressed) {
+
+		if (keyPressed.length < keyCode) {
+			keyPressed[keyCode] = pressed;
+		}
+	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("keyPressed" + e.getKeyCode());
+		setKeyPressed(e.getKeyCode(), true);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		System.out.println("keyReleased" + e.getKeyCode());
+
+		int keyCode = e.getKeyCode();
+
+		if (keyCode == KeyEvent.VK_F3) {
+			renderState = !renderState;
+		}
+
+		setKeyPressed(keyCode, false);
 	}
 
 	@Override
