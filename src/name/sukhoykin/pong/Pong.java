@@ -6,76 +6,80 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
-@SuppressWarnings("serial")
-public class Pong extends JFrame implements WindowListener {
+import name.sukhoykin.pong.core.Loop;
+import name.sukhoykin.pong.core.Scene;
+import name.sukhoykin.pong.game.PongScene;
+
+public class Pong implements WindowListener {
 
 	public static void main(String[] args) {
 		new Pong().start();
 	}
 
+	private JFrame frame = new JFrame();
 	private Canvas canvas = new Canvas();
-	private GameLoop<?> game;
+
+	private Loop loop = new Loop(60);
+	private Scene scene;
 
 	public Pong() {
 
-		setTitle("Pong");
-		setIgnoreRepaint(true);
+		frame.setTitle("Pong");
+		frame.setResizable(false);
+		frame.setIgnoreRepaint(true);
 
 		canvas.setIgnoreRepaint(true);
-		canvas.setSize(1024, 768);
+		canvas.setSize(Scene.WIDTH, Scene.HEIGHT);
 
-		addWindowListener(this);
+		frame.addWindowListener(this);
 
-		add(canvas);
-		pack();
-		setLocationRelativeTo(null);
+		frame.add(canvas);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 	}
 
 	public void start() {
-		setVisible(true);
+		frame.setVisible(true);
 	}
 
-	public void startGame(GameLoop<?> game) {
+	public void startScene(Scene scene) {
 
-		if (this.game != null) {
-			this.game.stopSimulation();
-
-			removeKeyListener(this.game);
-			canvas.removeKeyListener(this.game);
+		if (this.scene != null) {
+			frame.removeKeyListener(this.scene);
+			canvas.removeKeyListener(this.scene);
 		}
 
-		addKeyListener(game);
-		canvas.addKeyListener(game);
+		frame.addKeyListener(scene);
+		canvas.addKeyListener(scene);
 
-		this.game = game;
-		this.game.startSimulation();
+		this.scene = scene;
+
+		loop.startScene(scene);
 	}
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		startGame(new PongLoop(canvas));
+		loop.startScene(new PongScene(canvas));
 	}
 
 	@Override
 	public void windowActivated(WindowEvent e) {
-
-		if (game != null) {
-			game.resume();
-		}
+		loop.resume();
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
-		game.suspend();
+		loop.suspend();
 	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
 
-		game.stopSimulation();
-		game.waitForStop();
+		loop.suspend();
+		loop.waitForSuspend();
 
-		dispose();
+		frame.dispose();
+
 		System.exit(0);
 	}
 

@@ -1,4 +1,4 @@
-package name.sukhoykin.pong;
+package name.sukhoykin.pong.game;
 
 public class Paddle {
 
