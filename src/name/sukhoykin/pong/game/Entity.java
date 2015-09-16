@@ -2,9 +2,24 @@ package name.sukhoykin.pong.game;
 
 import name.sukhoykin.pong.core.Sprite;
 
-public interface Entity extends Sprite {
+public abstract class Entity implements Sprite {
 
-	Vector getPosition();
+	private Vector position = new Vector(0, 0);
 
-	Vector getDimension();
+	public void setPosition(double x, double y) {
+		position.x(x);
+		position.y(y);
+	}
+
+	public double getX() {
+		return position.x();
+	}
+
+	public double getY() {
+		return position.y();
+	}
+
+	public abstract double getWidth();
+
+	public abstract double getHeight();
 }

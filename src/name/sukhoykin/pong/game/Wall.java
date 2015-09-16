@@ -6,28 +6,13 @@ import java.awt.geom.Rectangle2D;
 
 import name.sukhoykin.pong.core.Input;
 
-public class Ball extends Entity {
+public class Wall extends Entity {
 
-	private double width = 15;
+	private double width;
 	private double height = 15;
 
-	private Vector velocity = new Vector(0, 0);
-
-	public Vector getVelocity() {
-		return velocity;
-	}
-
-	@Override
-	public void input(Input input) {
-	}
-
-	@Override
-	public void update(long dt) {
-		
-		double dx = velocity.x() / 1000 * dt;
-		double dy = velocity.y() / 1000 * dt;
-		
-		setPosition(getX() + dx, getY() + dy);
+	public Wall(double width) {
+		this.width = width;
 	}
 
 	@Override
@@ -45,5 +30,13 @@ public class Ball extends Entity {
 	@Override
 	public double getHeight() {
 		return height;
+	}
+
+	@Override
+	public void input(Input input) {
+	}
+
+	@Override
+	public void update(long dt) {
 	}
 }
