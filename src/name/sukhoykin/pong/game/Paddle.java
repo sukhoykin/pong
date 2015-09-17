@@ -13,7 +13,7 @@ public class Paddle extends Entity {
 	private double width = 15;
 	private double height = 120;
 
-	private double speed = 200;
+	private double speed = 250;
 
 	private boolean isLeft;
 	private Vector velocity = new Vector();
@@ -57,18 +57,23 @@ public class Paddle extends Entity {
 
 	@Override
 	public void input(Input input) {
-		
+
 		if (input.isPressed(KeyEvent.VK_UP)) {
 			moveUp();
 		} else if (input.isPressed(KeyEvent.VK_DOWN)) {
 			moveDown();
+		} else {
+			stop();
 		}
 	}
 
 	@Override
 	public void update(long dt) {
 
-		
+		double dx = velocity.x() / 1000 * dt;
+		double dy = velocity.y() / 1000 * dt;
+
+		setPosition(getX() + dx, getY() + dy);
 	}
 
 	@Override
