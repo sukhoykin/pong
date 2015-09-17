@@ -10,7 +10,7 @@ import name.sukhoykin.pong.core.Scene;
 public class Ball extends Entity {
 
 	private double size = 15;
-	private double startSpeed = 250;
+	private double startSpeed = 150;
 
 	private Vector velocity = new Vector();
 	private Random random = new Random();
@@ -27,6 +27,14 @@ public class Ball extends Entity {
 	@Override
 	public double getHeight() {
 		return size;
+	}
+
+	public void bounceX() {
+		velocity.set(-velocity.x(), velocity.y());
+	}
+
+	public void bounceY() {
+		velocity.set(velocity.x(), -velocity.y());
 	}
 
 	private double randomSign(double a) {

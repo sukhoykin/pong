@@ -19,6 +19,35 @@ public abstract class Entity implements Sprite {
 		return position.y();
 	}
 
+	public Vector isCollideWith(Entity entity) {
+
+		double ix = getIntersection(getX(), getX() + getWidth(), entity.getX(), entity.getX() + entity.getWidth());
+		double iy = getIntersection(getY(), getY() + getHeight(), entity.getY(), entity.getY() + entity.getHeight());
+
+		if (ix > 0 && iy > 0) {
+			return new Vector(ix, iy);
+		}
+
+		return null;
+	}
+
+	private double getIntersection(double a1, double a2, double b1, double b2) {
+
+		if (a1 < b1 && a2 > b1) {
+			return a2 - b1;
+		}
+
+		if (a1 >= b1 && a2 <= b2) {
+			return a2 - a1;
+		}
+
+		if (a1 < b2 && a2 > b2) {
+			return b2 - a1;
+		}
+
+		return 0;
+	}
+
 	@Override
 	public void input(Input input) {
 	}
