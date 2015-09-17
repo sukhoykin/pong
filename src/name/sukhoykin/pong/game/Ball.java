@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
-import name.sukhoykin.pong.core.Input;
 import name.sukhoykin.pong.core.Scene;
 
 public class Ball extends Entity {
@@ -42,11 +41,8 @@ public class Ball extends Entity {
 		double y = getY();
 
 		velocity.set(randomSign(x), randomSign(y));
+		velocity.set(20, 80);
 		velocity.setMagnitude(startSpeed);
-	}
-
-	@Override
-	public void input(Input input) {
 	}
 
 	@Override
@@ -55,7 +51,14 @@ public class Ball extends Entity {
 		double dx = velocity.x() * dt / 1000;
 		double dy = velocity.y() * dt / 1000;
 
-		setPosition(getX() + dx, getY() + dy);
+		double x = getX() + dx;
+		double y = getY() + dy;
+
+		if (y < 0 || y + size > Scene.HEIGHT) {
+			velocity.set(velocity.x(), -velocity.y());
+		}
+
+		setPosition(x, y);
 	}
 
 	@Override
