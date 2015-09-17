@@ -19,7 +19,7 @@ public class Paddle extends Entity {
 	private boolean isLeft;
 	private Vector velocity = new Vector();
 
-	public Paddle(boolean isLeft) {
+	private Paddle(boolean isLeft) {
 
 		this.isLeft = isLeft;
 		ready();
@@ -88,5 +88,19 @@ public class Paddle extends Entity {
 
 		g.setColor(Color.WHITE);
 		g.fill(new Rectangle2D.Double(getX(), getY(), width, height));
+	}
+
+	public static class Left extends Paddle {
+
+		public Left() {
+			super(true);
+		}
+	}
+
+	public static class Right extends Paddle {
+
+		public Right() {
+			super(false);
+		}
 	}
 }

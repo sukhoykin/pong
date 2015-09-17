@@ -8,8 +8,8 @@ public class PongScene extends Scene {
 
 	private PongState state = PongState.PLAY;
 
-	private Paddle paddleLeft = new Paddle(true);
-	private Paddle paddleRight = new Paddle(false);
+	private Paddle paddleLeft = new Paddle.Left();
+	private Paddle paddleRight = new Paddle.Right();
 
 	private Ball ball = new Ball();
 

@@ -38,10 +38,9 @@ public class Ball extends Entity {
 		setPosition(Scene.WIDTH / 2 - size / 2, Scene.HEIGHT / 2 - size / 2);
 
 		double x = Scene.WIDTH - getX();
-		double y = getY();
+		double y = random.nextInt((int) getY());
 
 		velocity.set(randomSign(x), randomSign(y));
-		velocity.set(20, 80);
 		velocity.setMagnitude(startSpeed);
 	}
 
