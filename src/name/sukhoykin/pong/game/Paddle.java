@@ -13,7 +13,8 @@ public class Paddle extends Entity {
 	private double width = 15;
 	private double height = 120;
 
-	private double speed = 250;
+	private double padding = 20;
+	private double speed = 500;
 
 	private boolean isLeft;
 	private Vector velocity = new Vector();
@@ -37,9 +38,9 @@ public class Paddle extends Entity {
 	public void ready() {
 
 		if (isLeft) {
-			setPosition(PongScene.PADDING, Scene.HEIGHT / 2 - height / 2);
+			setPosition(padding, Scene.HEIGHT / 2 - height / 2);
 		} else {
-			setPosition(Scene.WIDTH - PongScene.PADDING - width, Scene.HEIGHT / 2 - height / 2);
+			setPosition(Scene.WIDTH - padding - width, Scene.HEIGHT / 2 - height / 2);
 		}
 	}
 
@@ -70,8 +71,8 @@ public class Paddle extends Entity {
 	@Override
 	public void update(long dt) {
 
-		double dx = velocity.x() / 1000 * dt;
-		double dy = velocity.y() / 1000 * dt;
+		double dx = velocity.x() * dt / 1000;
+		double dy = velocity.y() * dt / 1000;
 
 		setPosition(getX() + dx, getY() + dy);
 	}

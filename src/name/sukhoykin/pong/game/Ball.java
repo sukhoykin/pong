@@ -10,9 +10,7 @@ import name.sukhoykin.pong.core.Scene;
 
 public class Ball extends Entity {
 
-	private double width = 15;
-	private double height = 15;
-
+	private double size = 15;
 	private double startSpeed = 250;
 
 	private Vector velocity = new Vector();
@@ -24,12 +22,12 @@ public class Ball extends Entity {
 
 	@Override
 	public double getWidth() {
-		return width;
+		return size;
 	}
 
 	@Override
 	public double getHeight() {
-		return height;
+		return size;
 	}
 
 	private double randomSign(double a) {
@@ -38,10 +36,10 @@ public class Ball extends Entity {
 
 	public void ready() {
 
-		setPosition(Scene.WIDTH / 2 - width / 2, Scene.HEIGHT / 2 - height / 2);
+		setPosition(Scene.WIDTH / 2 - size / 2, Scene.HEIGHT / 2 - size / 2);
 
 		double x = Scene.WIDTH - getX();
-		double y = Scene.HEIGHT / 2 - PongScene.PADDING;
+		double y = getY();
 
 		velocity.set(randomSign(x), randomSign(y));
 		velocity.setMagnitude(startSpeed);
@@ -54,8 +52,8 @@ public class Ball extends Entity {
 	@Override
 	public void update(long dt) {
 
-		double dx = velocity.x() / 1000 * dt;
-		double dy = velocity.y() / 1000 * dt;
+		double dx = velocity.x() * dt / 1000;
+		double dy = velocity.y() * dt / 1000;
 
 		setPosition(getX() + dx, getY() + dy);
 	}
@@ -64,6 +62,6 @@ public class Ball extends Entity {
 	public void render(Graphics2D g) {
 
 		g.setColor(Color.WHITE);
-		g.fill(new Rectangle2D.Double(getX(), getY(), width, height));
+		g.fill(new Rectangle2D.Double(getX(), getY(), size, size));
 	}
 }
