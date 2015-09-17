@@ -4,6 +4,9 @@ public class Vector {
 
 	private double x, y;
 
+	public Vector() {
+	}
+
 	public Vector(double x, double y) {
 		set(x, y);
 	}
@@ -13,12 +16,21 @@ public class Vector {
 		this.y = y;
 	}
 
-	public void x(double x) {
-		this.x = x;
+	public void setMagnitude(double magnitude) {
+
+		double currentMagnitude = getMagnitude();
+
+		if (currentMagnitude != 0) {
+
+			double sinA = y / currentMagnitude;
+			double cosA = x / currentMagnitude;
+
+			set(magnitude * cosA, magnitude * sinA);
+		}
 	}
 
-	public void y(double y) {
-		this.y = y;
+	public double getMagnitude() {
+		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 	}
 
 	public double x() {

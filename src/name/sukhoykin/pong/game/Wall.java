@@ -4,22 +4,22 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import name.sukhoykin.pong.core.Input;
+import name.sukhoykin.pong.core.Scene;
 
 public class Wall extends Entity {
 
 	private double width;
 	private double height = 15;
 
-	public Wall(double width) {
-		this.width = width;
-	}
+	public Wall(boolean isTop) {
 
-	@Override
-	public void render(Graphics2D g) {
+		this.width = Scene.WIDTH - PongScene.PADDING * 2;
 
-		g.setColor(Color.WHITE);
-		g.fill(new Rectangle2D.Double(getX(), getY(), width, height));
+		if (isTop) {
+			setPosition(PongScene.PADDING, PongScene.PADDING);
+		} else {
+			setPosition(PongScene.PADDING, Scene.HEIGHT - PongScene.PADDING - height);
+		}
 	}
 
 	@Override
@@ -33,10 +33,9 @@ public class Wall extends Entity {
 	}
 
 	@Override
-	public void input(Input input) {
-	}
+	public void render(Graphics2D g) {
 
-	@Override
-	public void update(long dt) {
+		g.setColor(Color.WHITE);
+		g.fill(new Rectangle2D.Double(getX(), getY(), width, height));
 	}
 }

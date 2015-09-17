@@ -1,14 +1,14 @@
 package name.sukhoykin.pong.game;
 
+import name.sukhoykin.pong.core.Input;
 import name.sukhoykin.pong.core.Sprite;
 
 public abstract class Entity implements Sprite {
 
-	private Vector position = new Vector(0, 0);
+	private Vector position = new Vector();
 
 	public void setPosition(double x, double y) {
-		position.x(x);
-		position.y(y);
+		position.set(x, y);
 	}
 
 	public double getX() {
@@ -17,6 +17,14 @@ public abstract class Entity implements Sprite {
 
 	public double getY() {
 		return position.y();
+	}
+
+	@Override
+	public void input(Input input) {
+	}
+
+	@Override
+	public void update(long dt) {
 	}
 
 	public abstract double getWidth();
