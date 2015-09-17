@@ -11,9 +11,9 @@ import name.sukhoykin.pong.core.Scene;
 public class Paddle extends Entity {
 
 	private double width = 15;
-	private double height = 120;
+	private double height = 100;
 
-	private double padding = 20;
+	private double padding = 25;
 	private double speed = 500;
 
 	private boolean isLeft;
@@ -71,10 +71,16 @@ public class Paddle extends Entity {
 	@Override
 	public void update(long dt) {
 
-		double dx = velocity.x() * dt / 1000;
 		double dy = velocity.y() * dt / 1000;
+		double y = getY() + dy;
 
-		setPosition(getX() + dx, getY() + dy);
+		if (y < 0) {
+			y = 0;
+		} else if (y + height > Scene.HEIGHT) {
+			y = Scene.HEIGHT - height;
+		}
+
+		setPosition(getX(), y);
 	}
 
 	@Override
