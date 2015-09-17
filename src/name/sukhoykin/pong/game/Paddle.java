@@ -2,6 +2,7 @@ package name.sukhoykin.pong.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 
 import name.sukhoykin.pong.core.Input;
@@ -12,8 +13,9 @@ public class Paddle extends Entity {
 	private double width = 15;
 	private double height = 120;
 
-	private boolean isLeft;
+	private double speed = 200;
 
+	private boolean isLeft;
 	private Vector velocity = new Vector();
 
 	public Paddle(boolean isLeft) {
@@ -41,8 +43,12 @@ public class Paddle extends Entity {
 		}
 	}
 
-	public void move(double y) {
-		velocity.set(0, y);
+	public void moveUp() {
+		velocity.set(0, -speed);
+	}
+
+	public void moveDown() {
+		velocity.set(0, speed);
 	}
 
 	public void stop() {
@@ -51,12 +57,18 @@ public class Paddle extends Entity {
 
 	@Override
 	public void input(Input input) {
-
+		
+		if (input.isPressed(KeyEvent.VK_UP)) {
+			moveUp();
+		} else if (input.isPressed(KeyEvent.VK_DOWN)) {
+			moveDown();
+		}
 	}
 
 	@Override
 	public void update(long dt) {
 
+		
 	}
 
 	@Override

@@ -13,9 +13,10 @@ public class Ball extends Entity {
 	private double width = 15;
 	private double height = 15;
 
-	private Random random = new Random();
+	private double startSpeed = 250;
 
 	private Vector velocity = new Vector();
+	private Random random = new Random();
 
 	public Ball() {
 		ready();
@@ -43,7 +44,7 @@ public class Ball extends Entity {
 		double y = Scene.HEIGHT / 2 - PongScene.PADDING;
 
 		velocity.set(randomSign(x), randomSign(y));
-		velocity.setMagnitude(50);
+		velocity.setMagnitude(startSpeed);
 	}
 
 	@Override

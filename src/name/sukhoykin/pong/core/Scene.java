@@ -81,7 +81,7 @@ public class Scene implements KeyListener, Input {
 
 	@Override
 	public boolean isPressed(int keyCode) {
-		return keyPressed.length < keyCode ? keyPressed[keyCode] : false;
+		return keyCode < keyPressed.length ? keyPressed[keyCode] : false;
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class Scene implements KeyListener, Input {
 
 	private void setKeyPressed(int keyCode, boolean pressed) {
 
-		if (keyPressed.length < keyCode) {
+		if (keyCode < keyPressed.length) {
 			keyPressed[keyCode] = pressed;
 		}
 	}

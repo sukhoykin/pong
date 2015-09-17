@@ -32,9 +32,5 @@ public class PongScene extends Scene {
 		addSprite(paddleRight);
 
 		addSprite(ball);
-
-		for (int i = 0; i < 20; i++) {
-			addSprite(new Ball());
-		}
 	}
 }
