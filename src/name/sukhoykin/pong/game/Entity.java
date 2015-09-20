@@ -6,9 +6,12 @@ import name.sukhoykin.pong.core.Sprite;
 public abstract class Entity implements Sprite {
 
 	private Vector position = new Vector();
+	private Vector velocity = new Vector();
 
-	public void setPosition(double x, double y) {
-		position.set(x, y);
+	private Vector collision = new Vector();
+
+	public Vector getPosition() {
+		return position;
 	}
 
 	public double getX() {
@@ -19,13 +22,27 @@ public abstract class Entity implements Sprite {
 		return position.y();
 	}
 
+	public double getWidthX() {
+		return position.x() + getWidth();
+	}
+
+	public double getHeightY() {
+		return position.y() + getHeight();
+	}
+
+	public Vector getVelocity() {
+		return velocity;
+	}
+
 	public Vector isCollideWith(Entity entity) {
 
-		double ix = getIntersection(getX(), getX() + getWidth(), entity.getX(), entity.getX() + entity.getWidth());
-		double iy = getIntersection(getY(), getY() + getHeight(), entity.getY(), entity.getY() + entity.getHeight());
+		double ix = getIntersection(getX(), getWidthX(), entity.getX(), entity.getWidthX());
+		double iy = getIntersection(getY(), getHeightY(), entity.getY(), entity.getHeightY());
 
 		if (ix > 0 && iy > 0) {
-			return new Vector(ix, iy);
+
+			collision.set(ix, iy);
+			return collision;
 		}
 
 		return null;
@@ -54,6 +71,7 @@ public abstract class Entity implements Sprite {
 
 	@Override
 	public void update(long dt) {
+		position = position.add(velocity.multiply(dt / 1000.0d));
 	}
 
 	public abstract double getWidth();

@@ -38,9 +38,9 @@ public class PongScene extends Scene {
 			if (collision != null) {
 
 				if (collision.x() <= collision.y()) {
-					ball.bounceX();
-				} else {
-					ball.bounceY();
+					ball.getVelocity().reflectX();
+				} else if (collision.x() > collision.y()) {
+					ball.getVelocity().reflectY();
 				}
 			}
 		}

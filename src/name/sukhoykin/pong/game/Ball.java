@@ -12,7 +12,6 @@ public class Ball extends Entity {
 	private double size = 15;
 	private double startSpeed = 150;
 
-	private Vector velocity = new Vector();
 	private Random random = new Random();
 
 	public Ball() {
@@ -29,43 +28,29 @@ public class Ball extends Entity {
 		return size;
 	}
 
-	public void bounceX() {
-		velocity.set(-velocity.x(), velocity.y());
-	}
-
-	public void bounceY() {
-		velocity.set(velocity.x(), -velocity.y());
-	}
-
 	private double randomSign(double a) {
 		return random.nextBoolean() ? a : -a;
 	}
 
 	public void ready() {
 
-		setPosition(Scene.WIDTH / 2 - size / 2, Scene.HEIGHT / 2 - size / 2);
+		getPosition().set(Scene.WIDTH / 2 - size / 2, Scene.HEIGHT / 2 - size / 2);
 
 		double x = Scene.WIDTH - getX();
 		double y = random.nextInt((int) getY());
 
-		velocity.set(randomSign(x), randomSign(y));
-		velocity.setMagnitude(startSpeed);
+		getVelocity().set(randomSign(x), randomSign(y));
+		getVelocity().setMagnitude(startSpeed);
 	}
 
 	@Override
 	public void update(long dt) {
 
-		double dx = velocity.x() * dt / 1000;
-		double dy = velocity.y() * dt / 1000;
+		super.update(dt);
 
-		double x = getX() + dx;
-		double y = getY() + dy;
-
-		if (y < 0 || y + size > Scene.HEIGHT) {
-			velocity.set(velocity.x(), -velocity.y());
+		if (getY() < 0 || getY() + size > Scene.HEIGHT) {
+			getVelocity().reflectY();
 		}
-
-		setPosition(x, y);
 	}
 
 	@Override

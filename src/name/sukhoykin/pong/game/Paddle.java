@@ -10,14 +10,13 @@ import name.sukhoykin.pong.core.Scene;
 
 public class Paddle extends Entity {
 
-	private double width = 15;
+	private double width = 80;
 	private double height = 100;
 
 	private double padding = 25;
 	private double speed = 500;
 
 	private boolean isLeft;
-	private Vector velocity = new Vector();
 
 	private Paddle(boolean isLeft) {
 
@@ -38,49 +37,41 @@ public class Paddle extends Entity {
 	public void ready() {
 
 		if (isLeft) {
-			setPosition(padding, Scene.HEIGHT / 2 - height / 2);
+			getPosition().set(padding, Scene.HEIGHT / 2 - height / 2);
 		} else {
-			setPosition(Scene.WIDTH - padding - width, Scene.HEIGHT / 2 - height / 2);
+			getPosition().set(Scene.WIDTH - padding - width, Scene.HEIGHT / 2 - height / 2);
 		}
-	}
-
-	public void moveUp() {
-		velocity.set(0, -speed);
-	}
-
-	public void moveDown() {
-		velocity.set(0, speed);
-	}
-
-	public void stop() {
-		velocity.set(0, 0);
 	}
 
 	@Override
 	public void input(Input input) {
 
 		if (input.isPressed(KeyEvent.VK_UP)) {
-			moveUp();
+
+			getVelocity().set(0, -speed);
+
 		} else if (input.isPressed(KeyEvent.VK_DOWN)) {
-			moveDown();
+
+			getVelocity().set(0, speed);
+
 		} else {
-			stop();
+			getVelocity().set(0, 0);
 		}
 	}
 
 	@Override
 	public void update(long dt) {
 
-		double dy = velocity.y() * dt / 1000;
-		double y = getY() + dy;
+		super.update(dt);
 
-		if (y < 0) {
-			y = 0;
-		} else if (y + height > Scene.HEIGHT) {
-			y = Scene.HEIGHT - height;
+		if (getY() < 0) {
+
+			getPosition().set(getX(), 0);
+
+		} else if (getY() + height > Scene.HEIGHT) {
+
+			getPosition().set(getX(), Scene.HEIGHT - height);
 		}
-
-		setPosition(getX(), y);
 	}
 
 	@Override
