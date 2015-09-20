@@ -40,7 +40,7 @@ public class Ball extends Entity {
 		double y = random.nextInt((int) getY());
 
 		getVelocity().set(randomSign(x), randomSign(y));
-		getVelocity().setMagnitude(startSpeed);
+		getVelocity().scale(startSpeed);
 	}
 
 	@Override

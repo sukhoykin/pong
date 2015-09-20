@@ -18,30 +18,38 @@ public class Vector {
 		this.y = y;
 	}
 
-	public double x() {
+	public double getX() {
 		return x;
 	}
 
-	public double y() {
+	public double getY() {
 		return y;
 	}
 
-	public void setMagnitude(double magnitude) {
+	public void scale(double scale) {
 
-		double currentMagnitude = getMagnitude();
+		double magnitude = getMagnitude();
 
-		if (currentMagnitude == 0) {
-			throw new IllegalStateException("Could not set magnitude for 0-vector");
+		if (magnitude == 0) {
+			throw new IllegalStateException("Could not scale vector with zero magnitude");
 		}
 
-		double ux = x / currentMagnitude;
-		double uy = y / currentMagnitude;
+		double ux = x / magnitude;
+		double uy = y / magnitude;
 
-		set(ux * magnitude, uy * magnitude);
+		set(ux * scale, uy * scale);
 	}
 
 	public double getMagnitude() {
 		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+	}
+
+	public void reflectX() {
+		x = -x;
+	}
+
+	public void reflectY() {
+		y = -y;
 	}
 
 	public Vector add(Vector vector) {
@@ -66,13 +74,5 @@ public class Vector {
 		multiply.y = y * scalar;
 
 		return multiply;
-	}
-
-	public void reflectX() {
-		x = -x;
-	}
-
-	public void reflectY() {
-		y = -y;
 	}
 }
