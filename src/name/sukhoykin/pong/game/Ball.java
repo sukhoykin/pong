@@ -10,7 +10,7 @@ import name.sukhoykin.pong.core.Scene;
 public class Ball extends Entity {
 
 	private double size = 15;
-	private double startSpeed = 150;
+	private double startSpeed = 450;
 
 	private Random random = new Random();
 
@@ -56,6 +56,8 @@ public class Ball extends Entity {
 	@Override
 	public void render(Graphics2D g) {
 
+		super.render(g);
+		
 		g.setColor(Color.WHITE);
 		g.fill(new Rectangle2D.Double(getX(), getY(), size, size));
 	}

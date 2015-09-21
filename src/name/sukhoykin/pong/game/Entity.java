@@ -1,5 +1,9 @@
 package name.sukhoykin.pong.game;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
+
 import name.sukhoykin.pong.core.Input;
 import name.sukhoykin.pong.core.Sprite;
 
@@ -78,6 +82,17 @@ public abstract class Entity implements Sprite {
 	@Override
 	public void update(long dt) {
 		position.add(velocity.getMultiplication(dt / 1000.0d));
+	}
+
+	@Override
+	public void render(Graphics2D g) {
+
+		g.setColor(Color.RED);
+		g.drawString("" + velocity.getMagnitude(), (float) position.getX() - 1, (float) position.getY() - 8);
+		
+		g.setColor(Color.BLUE);
+		g.draw(new Line2D.Double(position.getX(), position.getY(), position.getX() + velocity.getX(), position.getY()
+				+ velocity.getY()));
 	}
 
 	public abstract double getWidth();

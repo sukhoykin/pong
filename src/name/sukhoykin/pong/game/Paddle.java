@@ -10,11 +10,11 @@ import name.sukhoykin.pong.core.Scene;
 
 public class Paddle extends Entity {
 
-	private double width = 80;
+	private double width = 15;
 	private double height = 100;
 
-	private double padding = 25;
-	private double speed = 500;
+	private double padding = 35;
+	private double speed = 550;
 
 	private boolean isLeft;
 
@@ -76,6 +76,8 @@ public class Paddle extends Entity {
 
 	@Override
 	public void render(Graphics2D g) {
+
+		super.render(g);
 
 		g.setColor(Color.WHITE);
 		g.fill(new Rectangle2D.Double(getX(), getY(), width, height));

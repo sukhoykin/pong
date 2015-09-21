@@ -36,13 +36,15 @@ public class PongScene extends Scene {
 
 			if (collision != null) {
 
-				//System.out.println(collision);
-				
+				double x, y;
+
 				if (collision.isHorizontal()) {
+
+					y = ball.getPosition().getY();
 
 					if (collision.getPosition().getX() == ball.getPosition().getX()) {
 
-						ball.getPosition().set(collision.getPosition().getX(), ball.getPosition().getY());
+						x = ball.getPosition().getX() + collision.getDimension().getX();
 
 						if (ball.getVelocity().getX() < 0) {
 							ball.getVelocity().reflectX();
@@ -50,22 +52,45 @@ public class PongScene extends Scene {
 
 					} else {
 
-						ball.getPosition().set(ball.getPosition().getX() - collision.getDimension().getX(),
-								ball.getPosition().getY());
+						x = ball.getPosition().getX() - collision.getDimension().getX();
 
 						if (ball.getVelocity().getX() > 0) {
 							ball.getVelocity().reflectX();
 						}
 					}
+					// add an scale back
+					ball.getVelocity().add(paddle.getVelocity().getMultiplication(0.1d));
 
 				} else if (collision.isVertical()) {
 
-					//System.out.println("isVertical");
-					
+					x = ball.getPosition().getX();
+
+					if (collision.getPosition().getY() == ball.getPosition().getY()) {
+
+						y = ball.getPosition().getY() + collision.getDimension().getY();
+
+						if (ball.getVelocity().getY() < 0) {
+							ball.getVelocity().reflectY();
+						}
+
+					} else {
+
+						y = ball.getPosition().getY() - collision.getDimension().getY();
+
+						if (ball.getVelocity().getY() > 0) {
+							ball.getVelocity().reflectY();
+						}
+					}
+
+					ball.getVelocity().add(paddle.getVelocity());
+
 				} else {
 
-					//System.out.println("isVoronoi");
+					x = 0;
+					y = 0;
 				}
+
+				ball.getPosition().set(x, y);
 			}
 		}
 	}
