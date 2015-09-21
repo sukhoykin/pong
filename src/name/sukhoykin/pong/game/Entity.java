@@ -8,7 +8,10 @@ public abstract class Entity implements Sprite {
 	private Vector position = new Vector();
 	private Vector velocity = new Vector();
 
-	private Vector collision = new Vector();
+	private Vector intersectionX = new Vector();
+	private Vector intersectionY = new Vector();
+
+	private Collision collision = new Collision();
 
 	public Vector getPosition() {
 		return position;
@@ -34,35 +37,38 @@ public abstract class Entity implements Sprite {
 		return velocity;
 	}
 
-	public Vector isCollideWith(Entity entity) {
+	public Collision isCollideWith(Entity entity) {
 
-		double ix = getIntersection(getX(), getWidthX(), entity.getX(), entity.getWidthX());
-		double iy = getIntersection(getY(), getHeightY(), entity.getY(), entity.getHeightY());
+		intersectionX.set(0, 0);
+		intersectionY.set(0, 0);
 
-		if (ix > 0 && iy > 0) {
+		intersection(getX(), getWidthX(), entity.getX(), entity.getWidthX(), intersectionX);
+		intersection(getY(), getHeightY(), entity.getY(), entity.getHeightY(), intersectionY);
 
-			collision.set(ix, iy);
+		if (intersectionX.getY() > 0 && intersectionY.getY() > 0) {
+
+			collision.getPosition().set(intersectionX.getX(), intersectionY.getX());
+			collision.getDimension().set(intersectionX.getY(), intersectionY.getY());
+
 			return collision;
 		}
 
 		return null;
 	}
 
-	private double getIntersection(double a1, double a2, double b1, double b2) {
+	private void intersection(double a1, double a2, double b1, double b2, Vector intersection) {
 
 		if (a1 < b1 && a2 > b1) {
-			return a2 - b1;
+			intersection.set(b1, a2 - b1);
 		}
 
 		if (a1 >= b1 && a2 <= b2) {
-			return a2 - a1;
+			intersection.set(a1, a2 - a1);
 		}
 
 		if (a1 < b2 && a2 > b2) {
-			return b2 - a1;
+			intersection.set(a1, b2 - a1);
 		}
-
-		return 0;
 	}
 
 	@Override
@@ -71,7 +77,7 @@ public abstract class Entity implements Sprite {
 
 	@Override
 	public void update(long dt) {
-		position = position.add(velocity.multiply(dt / 1000.0d));
+		position.add(velocity.getMultiplication(dt / 1000.0d));
 	}
 
 	public abstract double getWidth();

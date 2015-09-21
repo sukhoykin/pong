@@ -10,20 +10,19 @@ public class PongScene extends Scene {
 
 	private PongState state = PongState.PLAY;
 
-	private List<Paddle> paddles = Arrays.asList(new Paddle.Left(), new Paddle.Right());
 	private Ball ball = new Ball();
+	private List<Paddle> paddles = Arrays.asList(new Paddle.Left(), new Paddle.Right());
 
 	public PongScene(Canvas canvas) {
 
 		super(canvas);
 
 		addSprite(new Table());
+		addSprite(ball);
 
 		for (Paddle paddle : paddles) {
 			addSprite(paddle);
 		}
-
-		addSprite(ball);
 	}
 
 	@Override
@@ -33,14 +32,39 @@ public class PongScene extends Scene {
 
 		for (Paddle paddle : paddles) {
 
-			Vector collision = ball.isCollideWith(paddle);
+			Collision collision = ball.isCollideWith(paddle);
 
 			if (collision != null) {
 
-				if (collision.getX() <= collision.getY()) {
-					ball.getVelocity().reflectX();
-				} else if (collision.getX() > collision.getY()) {
-					ball.getVelocity().reflectY();
+				//System.out.println(collision);
+				
+				if (collision.isHorizontal()) {
+
+					if (collision.getPosition().getX() == ball.getPosition().getX()) {
+
+						ball.getPosition().set(collision.getPosition().getX(), ball.getPosition().getY());
+
+						if (ball.getVelocity().getX() < 0) {
+							ball.getVelocity().reflectX();
+						}
+
+					} else {
+
+						ball.getPosition().set(ball.getPosition().getX() - collision.getDimension().getX(),
+								ball.getPosition().getY());
+
+						if (ball.getVelocity().getX() > 0) {
+							ball.getVelocity().reflectX();
+						}
+					}
+
+				} else if (collision.isVertical()) {
+
+					//System.out.println("isVertical");
+					
+				} else {
+
+					//System.out.println("isVoronoi");
 				}
 			}
 		}

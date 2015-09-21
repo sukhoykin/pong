@@ -4,7 +4,7 @@ public class Vector {
 
 	private double x, y;
 
-	private Vector addition, multiply;
+	private Vector unit, addition, multiply;
 
 	public Vector() {
 	}
@@ -26,22 +26,16 @@ public class Vector {
 		return y;
 	}
 
-	public void scale(double scale) {
-
-		double magnitude = getMagnitude();
-
-		if (magnitude == 0) {
-			throw new IllegalStateException("Could not scale vector with zero magnitude");
-		}
-
-		double ux = x / magnitude;
-		double uy = y / magnitude;
-
-		set(ux * scale, uy * scale);
-	}
-
 	public double getMagnitude() {
 		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+	}
+
+	public void scale(double scale) {
+
+		Vector unit = getUnitVector();
+
+		x = unit.x * scale;
+		y = unit.y * scale;
 	}
 
 	public void reflectX() {
@@ -52,27 +46,73 @@ public class Vector {
 		y = -y;
 	}
 
-	public Vector add(Vector vector) {
+	public void reflect() {
+		reflectX();
+		reflectY();
+	}
+
+	public void add(Vector vector) {
+
+		x = x + vector.x;
+		y = y + vector.y;
+	}
+
+	public void multiply(double scalar) {
+
+		x = x * scalar;
+		y = y * scalar;
+	}
+
+	private Vector copyTo(Vector vector) {
+
+		vector.x = x;
+		vector.y = y;
+
+		return vector;
+	}
+
+	public Vector getUnitVector() {
+
+		double magnitude = getMagnitude();
+
+		if (magnitude == 0) {
+			throw new IllegalStateException("Could not scale vector with zero magnitude");
+		}
+
+		if (unit == null) {
+			unit = new Vector();
+		}
+
+		unit.x = x / magnitude;
+		unit.y = y / magnitude;
+
+		return unit;
+	}
+
+	public Vector getAddition(Vector vector) {
 
 		if (addition == null) {
 			addition = new Vector();
 		}
 
-		addition.x = x + vector.x;
-		addition.y = y + vector.y;
+		copyTo(addition).add(vector);
 
 		return addition;
 	}
 
-	public Vector multiply(double scalar) {
+	public Vector getMultiplication(double scalar) {
 
 		if (multiply == null) {
 			multiply = new Vector();
 		}
 
-		multiply.x = x * scalar;
-		multiply.y = y * scalar;
+		copyTo(multiply).multiply(scalar);
 
 		return multiply;
+	}
+
+	@Override
+	public String toString() {
+		return "(" + x + ", " + y + ")";
 	}
 }
