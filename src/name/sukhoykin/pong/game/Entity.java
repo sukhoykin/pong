@@ -15,8 +15,8 @@ public abstract class Entity implements Sprite {
 	private Vector position = new Vector();
 	private Vector velocity = new Vector();
 
-	private Vector intersectionX = new Vector();
-	private Vector intersectionY = new Vector();
+	private Vector ix = new Vector();
+	private Vector iy = new Vector();
 
 	private Collision collision = new Collision();
 
@@ -50,16 +50,18 @@ public abstract class Entity implements Sprite {
 
 	public Collision isCollideWith(Entity entity) {
 
-		intersectionX.set(0, 0);
-		intersectionY.set(0, 0);
+		ix.set(0, 0);
+		iy.set(0, 0);
 
-		intersection(getX(), getWidthX(), entity.getX(), entity.getWidthX(), intersectionX);
-		intersection(getY(), getHeightY(), entity.getY(), entity.getHeightY(), intersectionY);
+		intersection(getX(), getWidthX(), entity.getX(), entity.getWidthX(), ix);
+		intersection(getY(), getHeightY(), entity.getY(), entity.getHeightY(), iy);
 
-		if (intersectionX.getY() > 0 && intersectionY.getY() > 0) {
+		if (ix.getY() > 0 && iy.getY() > 0) {
 
-			collision.getPosition().set(intersectionX.getX(), intersectionY.getX());
-			collision.getDimension().set(intersectionX.getY(), intersectionY.getY());
+			collision.getPosition().set(ix.getX(), iy.getX());
+			collision.getDimension().set(ix.getY(), iy.getY());
+
+			push();
 
 			return collision;
 		}
@@ -80,6 +82,34 @@ public abstract class Entity implements Sprite {
 		if (a1 < b2 && a2 > b2) {
 			intersection.set(a1, b2 - a1);
 		}
+	}
+
+	private void push() {
+
+		double x, y;
+
+		if (collision.isHorizontal()) {
+
+			y = getPosition().getY();
+
+			if (collision.isLeftOf(this)) {
+				x = getPosition().getX() + collision.getDimension().getX();
+			} else {
+				x = getPosition().getX() - collision.getDimension().getX();
+			}
+
+		} else {
+
+			x = getPosition().getX();
+
+			if (collision.isTopOf(this)) {
+				y = getPosition().getY() + collision.getDimension().getY();
+			} else {
+				y = getPosition().getY() - collision.getDimension().getY();
+			}
+		}
+
+		getPosition().set(x, y);
 	}
 
 	@Override

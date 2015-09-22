@@ -10,11 +10,11 @@ import name.sukhoykin.pong.core.Scene;
 
 public class Paddle extends Entity {
 
-	private double width = 15;
-	private double height = 100;
+	private double width = 25;
+	private double height = 60;
 
 	private double padding = 35;
-	private double speed = 550;
+	private double speed = 500;
 
 	private boolean isLeft;
 

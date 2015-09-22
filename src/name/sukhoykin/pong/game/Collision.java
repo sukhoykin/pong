@@ -17,6 +17,14 @@ public class Collision {
 		return dimension.getX() <= dimension.getY();
 	}
 
+	public boolean isLeftOf(Entity entity) {
+		return getPosition().getX() == entity.getPosition().getX();
+	}
+
+	public boolean isTopOf(Entity entity) {
+		return getPosition().getY() == entity.getPosition().getY();
+	}
+
 	@Override
 	public String toString() {
 		return position + " " + dimension;
