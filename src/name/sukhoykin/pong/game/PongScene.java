@@ -72,7 +72,7 @@ public class PongScene extends Scene {
 					// add an scale back
 					ball.getVelocity().add(paddle.getVelocity().getMultiplication(0.1d));
 
-				} else if (collision.isVertical()) {
+				} else {
 
 					x = ball.getPosition().getX();
 
@@ -95,10 +95,6 @@ public class PongScene extends Scene {
 
 					ball.getVelocity().add(paddle.getVelocity());
 
-				} else {
-
-					x = 0;
-					y = 0;
 				}
 
 				ball.getPosition().set(x, y);

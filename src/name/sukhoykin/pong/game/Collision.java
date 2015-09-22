@@ -14,11 +14,7 @@ public class Collision {
 	}
 
 	public boolean isHorizontal() {
-		return dimension.getX() < dimension.getY();
-	}
-
-	public boolean isVertical() {
-		return dimension.getX() > dimension.getY();
+		return dimension.getX() <= dimension.getY();
 	}
 
 	@Override
