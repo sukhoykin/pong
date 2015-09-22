@@ -10,7 +10,7 @@ import name.sukhoykin.pong.core.Scene;
 public class Ball extends Entity {
 
 	private double size = 15;
-	private double startSpeed = 300;
+	private double startSpeed = 500;
 
 	private Random random = new Random();
 
@@ -40,6 +40,10 @@ public class Ball extends Entity {
 		double y = random.nextInt((int) getY());
 
 		getVelocity().set(randomSign(x), randomSign(y));
+		
+		y = 2;
+		getVelocity().set(-x, y);
+		
 		getVelocity().scale(startSpeed);
 	}
 

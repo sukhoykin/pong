@@ -47,11 +47,9 @@ public class Paddle extends Entity {
 	public void input(Input input) {
 
 		if (input.isPressed(KeyEvent.VK_UP)) {
-
 			getVelocity().set(0, -speed);
 
 		} else if (input.isPressed(KeyEvent.VK_DOWN)) {
-
 			getVelocity().set(0, speed);
 
 		} else {

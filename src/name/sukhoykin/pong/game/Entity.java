@@ -58,10 +58,10 @@ public abstract class Entity implements Sprite {
 
 		if (ix.getY() > 0 && iy.getY() > 0) {
 
+			collision.entity = this;
+
 			collision.getPosition().set(ix.getX(), iy.getX());
 			collision.getDimension().set(ix.getY(), iy.getY());
-
-			push();
 
 			return collision;
 		}
@@ -84,7 +84,7 @@ public abstract class Entity implements Sprite {
 		}
 	}
 
-	private void push() {
+	public void push() {
 
 		double x, y;
 
@@ -92,7 +92,7 @@ public abstract class Entity implements Sprite {
 
 			y = getPosition().getY();
 
-			if (collision.isLeftOf(this)) {
+			if (collision.isLeft()) {
 				x = getPosition().getX() + collision.getDimension().getX();
 			} else {
 				x = getPosition().getX() - collision.getDimension().getX();
@@ -102,7 +102,7 @@ public abstract class Entity implements Sprite {
 
 			x = getPosition().getX();
 
-			if (collision.isTopOf(this)) {
+			if (collision.isTop()) {
 				y = getPosition().getY() + collision.getDimension().getY();
 			} else {
 				y = getPosition().getY() - collision.getDimension().getY();
