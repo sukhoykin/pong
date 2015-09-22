@@ -31,6 +31,10 @@ public class Loop implements Runnable {
 		dt = 1000 / fps;
 	}
 
+	public LoopState getState() {
+		return state;
+	}
+
 	public void setEconomyMode(boolean economy) {
 		this.economy = economy;
 	}
@@ -38,6 +42,8 @@ public class Loop implements Runnable {
 	public void startScene(Scene scene) {
 
 		if (suspend) {
+
+			scene.loop = this;
 
 			this.scene = scene;
 			resume();
@@ -52,8 +58,6 @@ public class Loop implements Runnable {
 
 		state = new LoopState();
 		state.stepTime = dt;
-
-		scene.state(state);
 
 		while (!suspend) {
 

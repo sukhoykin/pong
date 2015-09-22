@@ -5,9 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
 import name.sukhoykin.pong.core.Input;
+import name.sukhoykin.pong.core.Scene;
 import name.sukhoykin.pong.core.Sprite;
 
 public abstract class Entity implements Sprite {
+
+	Scene scene;
 
 	private Vector position = new Vector();
 	private Vector velocity = new Vector();
@@ -19,6 +22,10 @@ public abstract class Entity implements Sprite {
 
 	public Vector getPosition() {
 		return position;
+	}
+
+	public Scene getScene() {
+		return scene;
 	}
 
 	public double getX() {
@@ -87,12 +94,15 @@ public abstract class Entity implements Sprite {
 	@Override
 	public void render(Graphics2D g) {
 
-		g.setColor(Color.RED);
-		g.drawString("" + velocity.getMagnitude(), (float) position.getX() - 1, (float) position.getY() - 8);
-		
-		g.setColor(Color.BLUE);
-		g.draw(new Line2D.Double(position.getX(), position.getY(), position.getX() + velocity.getX(), position.getY()
-				+ velocity.getY()));
+		if (getScene().isRenderState()) {
+
+			g.setColor(Color.RED);
+			g.drawString("" + velocity.getMagnitude(), (float) position.getX() - 1, (float) position.getY() - 8);
+
+			g.setColor(Color.BLUE);
+			g.draw(new Line2D.Double(position.getX(), position.getY(), position.getX() + velocity.getX(), position
+					.getY() + velocity.getY()));
+		}
 	}
 
 	public abstract double getWidth();

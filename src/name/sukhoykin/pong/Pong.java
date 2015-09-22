@@ -12,6 +12,8 @@ import name.sukhoykin.pong.game.PongScene;
 
 public class Pong implements WindowListener {
 
+	public static final int FPS = 60;
+
 	public static void main(String[] args) {
 		new Pong().start();
 	}
@@ -19,7 +21,7 @@ public class Pong implements WindowListener {
 	private JFrame frame = new JFrame();
 	private Canvas canvas = new Canvas();
 
-	private Loop loop = new Loop(60);
+	private Loop game = new Loop(FPS);
 	private Scene scene;
 
 	public Pong() {
@@ -54,7 +56,7 @@ public class Pong implements WindowListener {
 
 		this.scene = scene;
 
-		loop.startScene(scene);
+		game.startScene(scene);
 	}
 
 	@Override
@@ -64,19 +66,19 @@ public class Pong implements WindowListener {
 
 	@Override
 	public void windowActivated(WindowEvent e) {
-		loop.resume();
+		game.resume();
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
-		loop.suspend();
+		game.suspend();
 	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
 
-		loop.suspend();
-		loop.waitForSuspend();
+		game.suspend();
+		game.waitForSuspend();
 
 		frame.dispose();
 

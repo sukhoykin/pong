@@ -14,18 +14,27 @@ public class Scene implements KeyListener, Input {
 	public final static int WIDTH = 1024;
 	public final static int HEIGHT = 768;
 
+	Loop loop;
+
 	private Canvas canvas;
 
 	private List<Sprite> sprites = new ArrayList<Sprite>();
 
 	private boolean[] keyPressed = new boolean[256];
 
-	private LoopState state;
 	private boolean renderState = false;
 
 	public Scene(Canvas canvas) {
 		this.canvas = canvas;
 		canvas.createBufferStrategy(2);
+	}
+
+	public Loop getGameLoop() {
+		return loop;
+	}
+
+	public boolean isRenderState() {
+		return renderState;
 	}
 
 	public void addSprite(Sprite sprite) {
@@ -34,10 +43,6 @@ public class Scene implements KeyListener, Input {
 
 	public void removeSprite(Sprite sprite) {
 		sprites.remove(sprite);
-	}
-
-	public final void state(LoopState state) {
-		this.state = state;
 	}
 
 	public void input() {
@@ -69,7 +74,7 @@ public class Scene implements KeyListener, Input {
 			}
 
 			if (renderState) {
-				state.render(g);
+				getGameLoop().getState().render(g);
 			}
 
 		} finally {

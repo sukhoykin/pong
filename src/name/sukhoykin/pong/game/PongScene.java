@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import name.sukhoykin.pong.core.Scene;
+import name.sukhoykin.pong.core.Sprite;
 
 public class PongScene extends Scene {
 
@@ -22,6 +23,16 @@ public class PongScene extends Scene {
 
 		for (Paddle paddle : paddles) {
 			addSprite(paddle);
+		}
+	}
+
+	@Override
+	public void addSprite(Sprite sprite) {
+
+		super.addSprite(sprite);
+
+		if (sprite instanceof Entity) {
+			((Entity) sprite).scene = this;
 		}
 	}
 
