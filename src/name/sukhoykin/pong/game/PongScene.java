@@ -9,7 +9,7 @@ public class PongScene extends EntityScene {
 	// private PongState state = PongState.PLAY;
 
 	private double bounceSpeedRateMin = 0.8;
-	private double bounceSpeedRateMax = 1.4;
+	private double bounceSpeedRateMax = 1.5;
 
 	private Vector bounceAngleMax = new Vector(1, 0.8);
 
@@ -42,11 +42,9 @@ public class PongScene extends EntityScene {
 				if (collision.isHorizontal()) {
 
 					double paddleCollisionY = collision.getCenterY() - paddle.getY();
+					double deviation = paddleCollisionY / paddle.getHeight();
 
-					double collisionCos = Math.cos(paddleCollisionY / paddle.getHeight() * Math.PI * 2) + 1;
-					double distributionScale = 2 / (bounceSpeedRateMax - bounceSpeedRateMin);
-					double speedRate = collisionCos / distributionScale + bounceSpeedRateMin;
-
+					double speedRate = getCosDistributedInRange(deviation, bounceSpeedRateMin, bounceSpeedRateMax);
 					double currentSpeed = ball.getVelocity().getMagnitude();
 
 					if (currentSpeed * speedRate > Ball.SPEED_MAX) {
@@ -60,14 +58,17 @@ public class PongScene extends EntityScene {
 						speedRate = 1;
 					}
 
-					double velocityX = paddle.getHeight() / bounceAngleMax.getY() / 2 * bounceAngleMax.getX();
+					double velocityX = paddle.getHeight() / bounceAngleMax.getY() * bounceAngleMax.getX() / 2;
 					double velocityY = paddleCollisionY - paddle.getHeight() / 2;
 
 					if (!collision.isLeft()) {
 						velocityX = -velocityX;
 					}
 
-					System.out.println(velocityX + " " + velocityY + " " + currentSpeed + " " + speedRate);
+//					System.out.println("velocityX: " + velocityX);
+//					System.out.println("velocityY: " + velocityY);
+//					System.out.println("currentSpeed: " + currentSpeed + " " + speedRate + " " + currentSpeed
+//							* speedRate);
 
 					ball.getVelocity().set(velocityX, velocityY);
 					ball.getVelocity().scale(currentSpeed);
@@ -85,5 +86,16 @@ public class PongScene extends EntityScene {
 				ball.push();
 			}
 		}
+	}
+
+	private double getCosDistributedInRange(double deviation, double min, double max) {
+
+		double scale = 2 / (max - min);
+
+		return (getCosDistributed(deviation) + 1) / scale + min;
+	}
+
+	private double getCosDistributed(double deviation) {
+		return Math.cos(deviation * Math.PI * 2);
 	}
 }

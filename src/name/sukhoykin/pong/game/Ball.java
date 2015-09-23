@@ -9,8 +9,10 @@ import name.sukhoykin.pong.core.Scene;
 
 public class Ball extends Entity {
 
-	public static final double SPEED_MAX = 550;
-	public static final double SPEED_MIN = 250;
+	public static final double SPEED_START_MAX = 500;
+	public static final double SPEED_START_MIN = 400;
+	public static final double SPEED_MAX = 700;
+	public static final double SPEED_MIN = 350;
 
 	private double size = 13;
 
@@ -34,8 +36,8 @@ public class Ball extends Entity {
 		return random.nextBoolean() ? a : -a;
 	}
 
-	private double randomSpeed() {
-		return random.nextDouble() * (SPEED_MAX - SPEED_MIN) + SPEED_MIN;
+	private double startSpeed() {
+		return random.nextDouble() * (SPEED_START_MAX - SPEED_START_MIN) + SPEED_START_MIN;
 	}
 
 	public void ready() {
@@ -46,11 +48,7 @@ public class Ball extends Entity {
 		double y = random.nextInt((int) getY());
 
 		getVelocity().set(randomSign(x), randomSign(y));
-
-		// y = 2;
-		// getVelocity().set(-x, y);
-
-		getVelocity().scale(randomSpeed());
+		getVelocity().scale(startSpeed());
 	}
 
 	@Override
