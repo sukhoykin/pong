@@ -47,40 +47,42 @@ public class PongScene extends EntityScene {
 					double speedRate = getCosDistributedInRange(deviation, bounceSpeedRateMin, bounceSpeedRateMax);
 					double currentSpeed = ball.getVelocity().getMagnitude();
 
-					if (currentSpeed * speedRate > Ball.SPEED_MAX) {
-
-						currentSpeed = Ball.SPEED_MAX;
-						speedRate = 1;
-
-					} else if (currentSpeed * speedRate < Ball.SPEED_MIN) {
-
-						currentSpeed = Ball.SPEED_MIN;
-						speedRate = 1;
-					}
-
+					double directionX = collision.isLeft() ? 1 : -1;
 					double velocityX = paddle.getHeight() / bounceAngleMax.getY() * bounceAngleMax.getX() / 2;
 					double velocityY = paddleCollisionY - paddle.getHeight() / 2;
 
-					if (!collision.isLeft()) {
-						velocityX = -velocityX;
-					}
-
-//					System.out.println("velocityX: " + velocityX);
-//					System.out.println("velocityY: " + velocityY);
-//					System.out.println("currentSpeed: " + currentSpeed + " " + speedRate + " " + currentSpeed
-//							* speedRate);
-
-					ball.getVelocity().set(velocityX, velocityY);
+					ball.getVelocity().set(velocityX * directionX, velocityY);
 					ball.getVelocity().scale(currentSpeed);
 					ball.getVelocity().multiply(speedRate);
 
 				} else {
 
-					if (collision.isTop()) {
+					if (collision.isBottom()) {
+
+						if (ball.getVelocity().getY() < 0) {
+							ball.getVelocity().reflectY();
+						}
 
 					} else {
 
+						if (ball.getVelocity().getY() > 0) {
+							ball.getVelocity().reflectY();
+						}
 					}
+
+					ball.getVelocity().reflectX();
+					ball.getVelocity().add(paddle.getVelocity());
+				}
+
+				double speed = ball.getVelocity().getMagnitude();
+
+				if (speed > Ball.SPEED_MAX) {
+
+					ball.getVelocity().scale(Ball.SPEED_MAX);
+
+				} else if (speed < Ball.SPEED_MIN) {
+
+					ball.getVelocity().scale(Ball.SPEED_MIN);
 				}
 
 				ball.push();

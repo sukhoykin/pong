@@ -102,7 +102,7 @@ public abstract class Entity implements Sprite {
 
 			x = getPosition().getX();
 
-			if (collision.isTop()) {
+			if (collision.isBottom()) {
 				y = getPosition().getY() + collision.getDimension().getY();
 			} else {
 				y = getPosition().getY() - collision.getDimension().getY();

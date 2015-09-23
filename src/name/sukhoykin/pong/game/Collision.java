@@ -31,7 +31,7 @@ public class Collision {
 		return getPosition().getX() == entity.getPosition().getX();
 	}
 
-	public boolean isTop() {
+	public boolean isBottom() {
 		return getPosition().getY() == entity.getPosition().getY();
 	}
 
