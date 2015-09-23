@@ -76,7 +76,7 @@ public class Vector {
 		double magnitude = getMagnitude();
 
 		if (magnitude == 0) {
-			throw new IllegalStateException("Could not scale vector with zero magnitude");
+			throw new IllegalStateException("Could not get unit vector due zero magnitude");
 		}
 
 		if (unit == null) {

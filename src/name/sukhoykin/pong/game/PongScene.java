@@ -8,6 +8,11 @@ public class PongScene extends EntityScene {
 
 	// private PongState state = PongState.PLAY;
 
+	private double bounceSpeedRateMin = 0.9;
+	private double bounceSpeedRateMax = 1.3;
+
+	private Vector bounceAngleMax = new Vector(1, 1);
+
 	private Ball ball = new Ball();
 	private List<Paddle> paddles = Arrays.asList(new Paddle.Left(), new Paddle.Right());
 
@@ -37,19 +42,36 @@ public class PongScene extends EntityScene {
 				if (collision.isHorizontal()) {
 
 					double paddleCollisionY = collision.getCenterY() - paddle.getY();
-					double collisionCos = Math.cos(paddleCollisionY / paddle.getHeight() * Math.PI * 2);
-					double speedMultiplicator = collisionCos / 5 + 1.1;
 
-					if (collision.isLeft()) {
+					double collisionCos = Math.cos(paddleCollisionY / paddle.getHeight() * Math.PI * 2) + 1;
+					double distributionScale = 2 / (bounceSpeedRateMax - bounceSpeedRateMin);
+					double speedRate = collisionCos / distributionScale + bounceSpeedRateMin;
 
-						System.out.println(speedMultiplicator);
+					double currentSpeed = ball.getVelocity().getMagnitude();
 
-					} else {
+					if (currentSpeed * speedRate > Ball.SPEED_MAX) {
 
-						System.out.println(speedMultiplicator);
+						currentSpeed = Ball.SPEED_MAX;
+						speedRate = 1;
+
+					} else if (currentSpeed * speedRate < Ball.SPEED_MIN) {
+
+						currentSpeed = Ball.SPEED_MIN;
+						speedRate = 1;
 					}
-					
-					//ball.getVelocity().multiply(speedMultiplicator);
+
+					double velocityX = paddle.getHeight() / bounceAngleMax.getY() / 2 * bounceAngleMax.getX();
+					double velocityY = paddleCollisionY - paddle.getHeight() / 2;
+
+					if (!collision.isLeft()) {
+						velocityX = -velocityX;
+					}
+
+					System.out.println(velocityX + " " + velocityY);
+
+					ball.getVelocity().set(velocityX, velocityY);
+					ball.getVelocity().scale(currentSpeed);
+					ball.getVelocity().multiply(speedRate);
 
 				} else {
 
