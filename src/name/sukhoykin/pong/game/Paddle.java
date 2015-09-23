@@ -10,11 +10,10 @@ import name.sukhoykin.pong.core.Scene;
 
 public class Paddle extends Entity {
 
-	private double width = 24;
-	private double height = 66;
+	private double width = 28;
+	private double height = width * 2.25;
 
 	private double padding = 35;
-	private double speed = 700;
 
 	private boolean isLeft;
 
@@ -47,10 +46,10 @@ public class Paddle extends Entity {
 	public void input(Input input) {
 
 		if (input.isPressed(KeyEvent.VK_UP)) {
-			getVelocity().set(0, -speed);
+			getVelocity().set(0, -Ball.SPEED_MAX);
 
 		} else if (input.isPressed(KeyEvent.VK_DOWN)) {
-			getVelocity().set(0, speed);
+			getVelocity().set(0, Ball.SPEED_MAX);
 
 		} else {
 			getVelocity().set(0, 0);

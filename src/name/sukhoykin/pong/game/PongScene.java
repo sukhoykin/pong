@@ -72,7 +72,7 @@ public class PongScene extends EntityScene {
 					}
 
 					ball.getVelocity().reflectX();
-					ball.getVelocity().add(paddle.getVelocity());
+					ball.getVelocity().add(paddle.getVelocity().getMultiplication(0.6));
 				}
 
 				ball.push();
