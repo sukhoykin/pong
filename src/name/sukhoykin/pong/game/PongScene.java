@@ -8,10 +8,10 @@ public class PongScene extends EntityScene {
 
 	// private PongState state = PongState.PLAY;
 
-	private double bounceSpeedRateMin = 0.9;
-	private double bounceSpeedRateMax = 1.3;
+	private double bounceSpeedRateMin = 0.8;
+	private double bounceSpeedRateMax = 1.4;
 
-	private Vector bounceAngleMax = new Vector(1, 1);
+	private Vector bounceAngleMax = new Vector(1, 0.8);
 
 	private Ball ball = new Ball();
 	private List<Paddle> paddles = Arrays.asList(new Paddle.Left(), new Paddle.Right());
@@ -67,7 +67,7 @@ public class PongScene extends EntityScene {
 						velocityX = -velocityX;
 					}
 
-					System.out.println(velocityX + " " + velocityY);
+					System.out.println(velocityX + " " + velocityY + " " + currentSpeed + " " + speedRate);
 
 					ball.getVelocity().set(velocityX, velocityY);
 					ball.getVelocity().scale(currentSpeed);

@@ -9,10 +9,10 @@ import name.sukhoykin.pong.core.Scene;
 
 public class Ball extends Entity {
 
-	public static final double SPEED_MAX = 600;
-	public static final double SPEED_MIN = 300;
+	public static final double SPEED_MAX = 550;
+	public static final double SPEED_MIN = 250;
 
-	private double size = 15;
+	private double size = 13;
 
 	private Random random = new Random();
 
@@ -47,8 +47,8 @@ public class Ball extends Entity {
 
 		getVelocity().set(randomSign(x), randomSign(y));
 
-		y = 2;
-		getVelocity().set(-x, y);
+		// y = 2;
+		// getVelocity().set(-x, y);
 
 		getVelocity().scale(randomSpeed());
 	}
@@ -58,8 +58,13 @@ public class Ball extends Entity {
 
 		super.update(dt);
 
-		if (getY() < 0 || getY() + size > Scene.HEIGHT) {
-			// push
+		if (getY() < 0) {
+			getPosition().set(getPosition().getX(), 0);
+			getVelocity().reflectY();
+		}
+
+		if (getY() + size > Scene.HEIGHT) {
+			getPosition().set(getPosition().getX(), Scene.HEIGHT - size);
 			getVelocity().reflectY();
 		}
 	}
