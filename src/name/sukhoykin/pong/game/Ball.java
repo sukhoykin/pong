@@ -9,10 +9,11 @@ import name.sukhoykin.pong.core.Scene;
 
 public class Ball extends Entity {
 
+	public static final double SPEED_MAX = 700;
+	public static final double SPEED_MIN = 350;
+
 	public static final double SPEED_START_MAX = 500;
 	public static final double SPEED_START_MIN = 400;
-	public static final double SPEED_MAX = 700;
-	public static final double SPEED_MIN = 400;
 
 	private double size = 13;
 

@@ -14,7 +14,7 @@ public class Paddle extends Entity {
 	private double height = 66;
 
 	private double padding = 35;
-	private double speed = 550;
+	private double speed = 700;
 
 	private boolean isLeft;
 
