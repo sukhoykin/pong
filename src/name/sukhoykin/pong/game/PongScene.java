@@ -87,11 +87,9 @@ public class PongScene extends EntityScene {
 		double speed = ball.getVelocity().getMagnitude();
 
 		if (speed > Ball.SPEED_MAX) {
-
 			ball.getVelocity().scale(Ball.SPEED_MAX);
 
 		} else if (speed < Ball.SPEED_MIN) {
-
 			ball.getVelocity().scale(Ball.SPEED_MIN);
 		}
 	}
@@ -99,8 +97,9 @@ public class PongScene extends EntityScene {
 	private double getCosDistributedInRange(double deviation, double min, double max) {
 
 		double scale = 2 / (max - min);
+		double positiveDistribution = getCosDistributed(deviation) + 1;
 
-		return (getCosDistributed(deviation) + 1) / scale + min;
+		return positiveDistribution / scale + min;
 	}
 
 	private double getCosDistributed(double deviation) {
