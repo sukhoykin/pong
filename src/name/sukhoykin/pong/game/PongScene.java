@@ -8,10 +8,8 @@ public class PongScene extends EntityScene {
 
 	// private PongState state = PongState.PLAY;
 
-	private double bounceSpeedRateMin = 0.9;
-	private double bounceSpeedRateMax = 1.4;
-
-	private Vector bounceAngleMax = new Vector(1, 0.9);
+	private Vector speedRateRange = new Vector(0.9, 1.4);
+	private Vector angleMaxVector = new Vector(1, 0.9);
 
 	private Ball ball = new Ball();
 	private List<Paddle> paddles = Arrays.asList(new Paddle.Left(), new Paddle.Right());
@@ -44,12 +42,12 @@ public class PongScene extends EntityScene {
 					double paddleCollisionY = collision.getCenterY() - paddle.getY();
 					double deviation = paddleCollisionY / paddle.getHeight();
 
-					double speedRate = getCosDistributedInRange(deviation, bounceSpeedRateMin, bounceSpeedRateMax);
+					double speedRate = getCosDistributedInRange(deviation, speedRateRange);
 					double currentSpeed = ball.getVelocity().getMagnitude();
 
 					double directionX = collision.isLeft() ? 1 : -1;
 
-					double velocityX = paddle.getHeight() / bounceAngleMax.getY() * bounceAngleMax.getX() / 2;
+					double velocityX = paddle.getHeight() / angleMaxVector.getY() * angleMaxVector.getX() / 2;
 					double velocityY = paddleCollisionY - paddle.getHeight() / 2;
 
 					ball.getVelocity().set(velocityX * directionX, velocityY);
@@ -94,7 +92,10 @@ public class PongScene extends EntityScene {
 		}
 	}
 
-	private double getCosDistributedInRange(double deviation, double min, double max) {
+	private double getCosDistributedInRange(double deviation, Vector range) {
+
+		double min = range.getX();
+		double max = range.getY();
 
 		double scale = 2 / (max - min);
 		double positiveDistribution = getCosDistributed(deviation) + 1;
