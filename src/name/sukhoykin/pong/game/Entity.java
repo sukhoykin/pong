@@ -130,8 +130,8 @@ public abstract class Entity implements Sprite {
 			g.drawString("" + velocity.getAmplitude(), (float) position.getX() - 1, (float) position.getY() - 8);
 
 			g.setColor(Color.BLUE);
-			g.draw(new Line2D.Double(position.getX(), position.getY(), position.getX() + velocity.getX(), position
-					.getY() + velocity.getY()));
+			g.draw(new Line2D.Double(position.getX(), position.getY(), position.getX() + velocity.getX() * 0.1,
+					position.getY() + velocity.getY() * 0.1));
 		}
 	}
 

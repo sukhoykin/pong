@@ -10,8 +10,8 @@ public class PongScene extends EntityScene {
 
 	private final static Logger log = Logger.getLogger(PongScene.class.getName());
 
-	public static final double BALL_SPEED_MAX = 800;
-	public static final double BALL_SPEED_MIN = BALL_SPEED_MAX * 0.5;
+	public static final double BALL_SPEED_MAX = 930;
+	public static final double BALL_SPEED_MIN = BALL_SPEED_MAX * 0.55;
 
 	public static final double PADDLE_SPEED = BALL_SPEED_MAX * 0.8;
 
