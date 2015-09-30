@@ -46,10 +46,10 @@ public class Paddle extends Entity {
 	public void input(Input input) {
 
 		if (input.isPressed(KeyEvent.VK_UP)) {
-			getVelocity().set(0, -Ball.SPEED_MAX);
+			getVelocity().set(0, -PongScene.PADDLE_SPEED);
 
 		} else if (input.isPressed(KeyEvent.VK_DOWN)) {
-			getVelocity().set(0, Ball.SPEED_MAX);
+			getVelocity().set(0, PongScene.PADDLE_SPEED);
 
 		} else {
 			getVelocity().set(0, 0);
@@ -62,11 +62,9 @@ public class Paddle extends Entity {
 		super.update(dt);
 
 		if (getY() < 0) {
-
 			getPosition().set(getX(), 0);
 
 		} else if (getY() + height > Scene.HEIGHT) {
-
 			getPosition().set(getX(), Scene.HEIGHT - height);
 		}
 	}

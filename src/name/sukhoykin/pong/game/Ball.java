@@ -9,12 +9,6 @@ import name.sukhoykin.pong.core.Scene;
 
 public class Ball extends Entity {
 
-	public static final double SPEED_MAX = 700;
-	public static final double SPEED_MIN = 350;
-
-	public static final double SPEED_START_MAX = 500;
-	public static final double SPEED_START_MIN = 400;
-
 	private double size = 13;
 
 	private Random random = new Random();
@@ -38,7 +32,8 @@ public class Ball extends Entity {
 	}
 
 	private double startSpeed() {
-		return random.nextDouble() * (SPEED_START_MAX - SPEED_START_MIN) + SPEED_START_MIN;
+		return random.nextDouble() * (PongScene.BALL_SPEED_MAX * 0.7 - PongScene.BALL_SPEED_MIN)
+				+ PongScene.BALL_SPEED_MIN;
 	}
 
 	public void ready() {

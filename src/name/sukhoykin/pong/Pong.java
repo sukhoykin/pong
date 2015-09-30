@@ -3,6 +3,7 @@ package name.sukhoykin.pong;
 import java.awt.Canvas;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.logging.LogManager;
 
 import javax.swing.JFrame;
 
@@ -15,6 +16,13 @@ public class Pong implements WindowListener {
 	public static final int FPS = 60;
 
 	public static void main(String[] args) {
+
+		try {
+			LogManager.getLogManager().readConfiguration(Pong.class.getResourceAsStream("/logging.properties"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		new Pong().start();
 	}
 
