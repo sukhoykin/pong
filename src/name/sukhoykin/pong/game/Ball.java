@@ -53,13 +53,21 @@ public class Ball extends Entity {
 		super.update(dt);
 
 		if (getY() < 0) {
-			getPosition().set(getPosition().getX(), 0);
+			getPosition().set(getX(), 0);
 			getVelocity().reflectY();
 		}
 
 		if (getY() + size > Scene.HEIGHT) {
-			getPosition().set(getPosition().getX(), Scene.HEIGHT - size);
+			getPosition().set(getX(), Scene.HEIGHT - size);
 			getVelocity().reflectY();
+		}
+
+		if (getX() > Scene.WIDTH) {
+			getPosition().set(0, getY());
+		}
+
+		if (getX() + getWidth() < 0) {
+			getPosition().set(Scene.WIDTH, getY());
 		}
 	}
 

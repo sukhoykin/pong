@@ -15,7 +15,7 @@ public class PongScene extends EntityScene {
 
 	public static final double PADDLE_SPEED = BALL_SPEED_MAX * 0.8;
 
-	private Vector speedRateRange = new Vector(0.85, 1.35);
+	private Vector speedRateRange = new Vector(0.9, 1.35);
 	private Vector bounceAngleMax = new Vector(1, 0.9);
 
 	private Ball ball = new Ball();
@@ -50,7 +50,7 @@ public class PongScene extends EntityScene {
 					double paddleDeviationY = paddleCollisionY / paddle.getHeight();
 
 					double speedRate = getCosDistributedInRange(paddleDeviationY, speedRateRange);
-					double bounceSpeed = getLimitedSpeed(ball.getVelocity().getMagnitude() * speedRate);
+					double bounceSpeed = getLimitedBallSpeed(ball.getVelocity().getAmplitude() * speedRate);
 
 					double bounceDirectionX = collision.isLeft() ? 1 : -1;
 
@@ -82,7 +82,7 @@ public class PongScene extends EntityScene {
 				if (log.isLoggable(Level.INFO)) {
 					log.info(String.format("horizontal: %b, x: %d, y: %d, speed: %d", collision.isHorizontal(),
 							(int) ball.getVelocity().getX(), (int) ball.getVelocity().getY(), (int) ball.getVelocity()
-									.getMagnitude()));
+									.getAmplitude()));
 				}
 
 				ball.push();
@@ -105,7 +105,7 @@ public class PongScene extends EntityScene {
 		return Math.cos(deviation * Math.PI * 2);
 	}
 
-	private double getLimitedSpeed(double speed) {
+	private double getLimitedBallSpeed(double speed) {
 
 		if (speed > PongScene.BALL_SPEED_MAX) {
 			return PongScene.BALL_SPEED_MAX;
