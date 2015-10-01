@@ -36,12 +36,20 @@ public abstract class Entity implements Sprite {
 		return position.getY();
 	}
 
+	public double getCenterX() {
+		return getX() + getWidth() / 2;
+	}
+
+	public double getCenterY() {
+		return getY() + getHeight() / 2;
+	}
+
 	public double getWidthX() {
-		return position.getX() + getWidth();
+		return getX() + getWidth();
 	}
 
 	public double getHeightY() {
-		return position.getY() + getHeight();
+		return getY() + getHeight();
 	}
 
 	public Vector getVelocity() {

@@ -27,6 +27,14 @@ public class Ball extends Entity {
 		return size;
 	}
 
+	public boolean isMoveUp() {
+		return getVelocity().getY() < 0;
+	}
+
+	public boolean isMoveDown() {
+		return getVelocity().getY() >= 0;
+	}
+
 	private double randomSign(double a) {
 		return random.nextBoolean() ? a : -a;
 	}

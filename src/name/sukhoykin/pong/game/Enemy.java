@@ -1,5 +1,7 @@
 package name.sukhoykin.pong.game;
 
+import java.awt.Graphics2D;
+
 public class Enemy extends Paddle {
 
 	private Ball ball;
@@ -14,10 +16,10 @@ public class Enemy extends Paddle {
 
 		super.update(dt);
 
-		if (isBallAbove()) {
+		if (ballAbove() && ball.isMoveUp()) {
 			moveUp();
 
-		} else if (isBallBelow()) {
+		} else if (ballBelow() && ball.isMoveDown()) {
 			moveDown();
 
 		} else {
@@ -25,11 +27,30 @@ public class Enemy extends Paddle {
 		}
 	}
 
-	private boolean isBallAbove() {
-		return ball.getY() + ball.getHeight() / 2 < getY() + getHeight() / 2;
+	private boolean ballAbove() {
+
+		if (!isMoving()) {
+			return ball.getCenterY() < getY();
+		} else {
+			return ball.getCenterY() < getY() + getHeight();
+		}
 	}
 
-	private boolean isBallBelow() {
-		return ball.getY() + ball.getHeight() / 2 > getY() + getHeight() / 2;
+	private boolean ballBelow() {
+
+		if (!isMoving()) {
+			return ball.getCenterY() > getY() + getHeight();
+		} else {
+			return ball.getCenterY() > getY();
+		}
+	}
+
+	@Override
+	public void render(Graphics2D g) {
+
+		super.render(g);
+
+		// g.setColor(Color.ORANGE);
+		// g.drawLine(0, (int) getCenterY(), Scene.WIDTH, (int) getCenterY());
 	}
 }

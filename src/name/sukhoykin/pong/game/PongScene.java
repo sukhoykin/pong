@@ -23,7 +23,8 @@ public class PongScene extends EntityScene {
 
 	private Ball ball = new Ball();
 
-	private List<Paddle> paddles = Arrays.asList(new Player(), new Enemy(ball));
+	//private List<Paddle> paddles = Arrays.asList(new Player(), new Enemy(ball));
+	private List<Enemy> paddles = Arrays.asList(new Enemy(ball), new Enemy(ball));
 
 	private Paddle leftPaddle = paddles.get(0);
 	private Paddle rightPaddle = paddles.get(1);

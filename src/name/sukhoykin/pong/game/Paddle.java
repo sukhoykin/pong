@@ -11,8 +11,6 @@ public class Paddle extends Entity {
 	private double width = 28;
 	private double height = width * 2.25;
 
-	
-
 	@Override
 	public double getWidth() {
 		return width;
@@ -21,6 +19,10 @@ public class Paddle extends Entity {
 	@Override
 	public double getHeight() {
 		return height;
+	}
+
+	public boolean isMoving() {
+		return getVelocity().getY() != 0;
 	}
 
 	public void moveUp() {
