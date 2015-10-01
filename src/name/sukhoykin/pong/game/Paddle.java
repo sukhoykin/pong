@@ -2,10 +2,8 @@ package name.sukhoykin.pong.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 
-import name.sukhoykin.pong.core.Input;
 import name.sukhoykin.pong.core.Scene;
 
 public class Paddle extends Entity {
@@ -13,15 +11,7 @@ public class Paddle extends Entity {
 	private double width = 28;
 	private double height = width * 2.25;
 
-	private double padding = 35;
-
-	private boolean isLeft;
-
-	private Paddle(boolean isLeft) {
-
-		this.isLeft = isLeft;
-		ready();
-	}
+	
 
 	@Override
 	public double getWidth() {
@@ -33,25 +23,23 @@ public class Paddle extends Entity {
 		return height;
 	}
 
-	public void ready() {
+	public void moveUp() {
 
-		if (isLeft) {
-			getPosition().set(padding, Scene.HEIGHT / 2 - height / 2);
-		} else {
-			getPosition().set(Scene.WIDTH - padding - width, Scene.HEIGHT / 2 - height / 2);
+		if (getVelocity().getY() >= 0) {
+			getVelocity().set(0, -PongScene.PADDLE_SPEED);
 		}
 	}
 
-	@Override
-	public void input(Input input) {
+	public void moveDown() {
 
-		if (input.isPressed(KeyEvent.VK_UP)) {
-			getVelocity().set(0, -PongScene.PADDLE_SPEED);
-
-		} else if (input.isPressed(KeyEvent.VK_DOWN)) {
+		if (getVelocity().getY() <= 0) {
 			getVelocity().set(0, PongScene.PADDLE_SPEED);
+		}
+	}
 
-		} else {
+	public void stop() {
+
+		if (getVelocity().getY() != 0) {
 			getVelocity().set(0, 0);
 		}
 	}
@@ -76,19 +64,5 @@ public class Paddle extends Entity {
 
 		g.setColor(Color.WHITE);
 		g.fill(new Rectangle2D.Double(getX(), getY(), width, height));
-	}
-
-	public static class Left extends Paddle {
-
-		public Left() {
-			super(true);
-		}
-	}
-
-	public static class Right extends Paddle {
-
-		public Right() {
-			super(false);
-		}
 	}
 }

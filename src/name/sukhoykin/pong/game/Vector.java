@@ -26,7 +26,7 @@ public class Vector {
 		return y;
 	}
 
-	public double getAmplitude() {
+	public double getMagnitude() {
 		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 	}
 
@@ -73,7 +73,7 @@ public class Vector {
 
 	public Vector getUnitVector() {
 
-		double magnitude = getAmplitude();
+		double magnitude = getMagnitude();
 
 		if (magnitude == 0) {
 			throw new IllegalStateException("Could not get unit vector due zero magnitude");

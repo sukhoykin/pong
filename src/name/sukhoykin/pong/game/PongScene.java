@@ -6,20 +6,27 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import name.sukhoykin.pong.core.Scene;
+
 public class PongScene extends EntityScene {
 
 	private final static Logger log = Logger.getLogger(PongScene.class.getName());
 
-	public static final double BALL_SPEED_MAX = 930;
-	public static final double BALL_SPEED_MIN = BALL_SPEED_MAX * 0.55;
+	public static final double BALL_SPEED_MAX = 900;
+	public static final double BALL_SPEED_MIN = BALL_SPEED_MAX * 0.6;
 
 	public static final double PADDLE_SPEED = BALL_SPEED_MAX * 0.8;
+	public static final double PADDLE_PADDING = 35;
 
 	private Vector speedRateRange = new Vector(0.9, 1.35);
 	private Vector bounceAngleMax = new Vector(1, 0.9);
 
 	private Ball ball = new Ball();
-	private List<Paddle> paddles = Arrays.asList(new Paddle.Left(), new Paddle.Right());
+
+	private List<Paddle> paddles = Arrays.asList(new Player(), new Enemy(ball));
+
+	private Paddle leftPaddle = paddles.get(0);
+	private Paddle rightPaddle = paddles.get(1);
 
 	public PongScene(Canvas canvas) {
 
@@ -31,6 +38,10 @@ public class PongScene extends EntityScene {
 		for (Paddle paddle : paddles) {
 			addSprite(paddle);
 		}
+
+		leftPaddle.getPosition().set(PADDLE_PADDING, Scene.HEIGHT / 2 - leftPaddle.getHeight() / 2);
+		rightPaddle.getPosition().set(Scene.WIDTH - PADDLE_PADDING - rightPaddle.getWidth(),
+				Scene.HEIGHT / 2 - rightPaddle.getHeight() / 2);
 	}
 
 	@Override
@@ -50,7 +61,7 @@ public class PongScene extends EntityScene {
 					double paddleDeviationY = paddleCollisionY / paddle.getHeight();
 
 					double speedRate = getCosDistributedInRange(paddleDeviationY, speedRateRange);
-					double bounceSpeed = getLimitedBallSpeed(ball.getVelocity().getAmplitude() * speedRate);
+					double bounceSpeed = getLimitedBallSpeed(ball.getVelocity().getMagnitude() * speedRate);
 
 					double bounceDirectionX = collision.isLeft() ? 1 : -1;
 
@@ -82,7 +93,7 @@ public class PongScene extends EntityScene {
 				if (log.isLoggable(Level.INFO)) {
 					log.info(String.format("horizontal: %b, x: %d, y: %d, speed: %d", collision.isHorizontal(),
 							(int) ball.getVelocity().getX(), (int) ball.getVelocity().getY(), (int) ball.getVelocity()
-									.getAmplitude()));
+									.getMagnitude()));
 				}
 
 				ball.push();

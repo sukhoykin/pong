@@ -11,16 +11,16 @@ import name.sukhoykin.pong.core.Sprite;
 
 public class Table implements Sprite {
 
-	private int lineSize = 8;
+	private int lineSize = 7;
 	private BufferedImage line = new BufferedImage(lineSize, Scene.HEIGHT, BufferedImage.TYPE_INT_RGB);
 
 	public Table() {
 
 		Graphics2D g = line.createGraphics();
 
-		g.setColor(Color.WHITE);
+		g.setColor(Color.GRAY);
 
-		for (int i = 0; i < Scene.HEIGHT / lineSize; i += 2) {
+		for (double i = 0; i < Scene.HEIGHT / lineSize; i += 2.5) {
 			g.fill(new Rectangle2D.Double(0, i * lineSize, lineSize, lineSize));
 		}
 	}
