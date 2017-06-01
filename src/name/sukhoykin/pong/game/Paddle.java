@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import name.sukhoykin.pong.core.Entity;
 import name.sukhoykin.pong.core.Scene;
 
 public class Paddle extends Entity {

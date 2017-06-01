@@ -1,4 +1,4 @@
-package name.sukhoykin.pong.game;
+package name.sukhoykin.pong.core;
 
 public class Vector {
 

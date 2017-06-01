@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import name.sukhoykin.pong.core.Collision;
+import name.sukhoykin.pong.core.EntityScene;
 import name.sukhoykin.pong.core.Scene;
+import name.sukhoykin.pong.core.Vector;
 
 public class PongScene extends EntityScene {
 

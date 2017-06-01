@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
+import name.sukhoykin.pong.core.Entity;
 import name.sukhoykin.pong.core.Scene;
 
 public class Ball extends Entity {

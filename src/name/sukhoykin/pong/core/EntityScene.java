@@ -1,9 +1,6 @@
-package name.sukhoykin.pong.game;
+package name.sukhoykin.pong.core;
 
 import java.awt.Canvas;
-
-import name.sukhoykin.pong.core.Scene;
-import name.sukhoykin.pong.core.Sprite;
 
 public abstract class EntityScene extends Scene {
 
