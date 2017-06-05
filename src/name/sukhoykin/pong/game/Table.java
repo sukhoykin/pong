@@ -36,9 +36,9 @@ public class Table implements Sprite {
 	@Override
 	public void render(Graphics2D g) {
 
-		g.setBackground(Color.BLACK);
-
-		g.clearRect(0, 0, Scene.WIDTH, Scene.HEIGHT);
+		g.setColor(Color.BLACK);
+		g.fill(new Rectangle2D.Double(0, 0, Scene.WIDTH, Scene.HEIGHT));
+		
 		g.drawImage(line, Scene.WIDTH / 2 - lineSize, 0, null);
 	}
 }
