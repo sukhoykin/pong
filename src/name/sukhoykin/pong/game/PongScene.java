@@ -100,7 +100,7 @@ public class PongScene extends EntityScene {
 									.getMagnitude()));
 				}
 
-				ball.push();
+				pushBall(ball, collision);
 			}
 		}
 	}
@@ -131,5 +131,33 @@ public class PongScene extends EntityScene {
 		}
 
 		return speed;
+	}
+	
+	private void pushBall(Ball ball, Collision collision) {
+
+		double x, y;
+
+		if (collision.isHorizontal()) {
+
+			y = ball.getPosition().getY();
+
+			if (collision.isLeft()) {
+				x = ball.getPosition().getX() + collision.getDimension().getX();
+			} else {
+				x = ball.getPosition().getX() - collision.getDimension().getX();
+			}
+
+		} else {
+
+			x = ball.getPosition().getX();
+
+			if (collision.isBottom()) {
+				y = ball.getPosition().getY() + collision.getDimension().getY();
+			} else {
+				y = ball.getPosition().getY() - collision.getDimension().getY();
+			}
+		}
+
+		ball.getPosition().set(x, y);
 	}
 }

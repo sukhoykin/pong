@@ -27,14 +27,6 @@ public class Collision {
 		return dimension.getX() <= dimension.getY();
 	}
 
-	public boolean isLeft() {
-		return getPosition().getX() == entity.getPosition().getX();
-	}
-
-	public boolean isBottom() {
-		return getPosition().getY() == entity.getPosition().getY();
-	}
-
 	@Override
 	public String toString() {
 		return position + " " + dimension;

@@ -88,34 +88,6 @@ public abstract class Entity implements Sprite {
 		}
 	}
 
-	public void push() {
-
-		double x, y;
-
-		if (collision.isHorizontal()) {
-
-			y = getPosition().getY();
-
-			if (collision.isLeft()) {
-				x = getPosition().getX() + collision.getDimension().getX();
-			} else {
-				x = getPosition().getX() - collision.getDimension().getX();
-			}
-
-		} else {
-
-			x = getPosition().getX();
-
-			if (collision.isBottom()) {
-				y = getPosition().getY() + collision.getDimension().getY();
-			} else {
-				y = getPosition().getY() - collision.getDimension().getY();
-			}
-		}
-
-		getPosition().set(x, y);
-	}
-
 	@Override
 	public void input(Input input) {
 	}
