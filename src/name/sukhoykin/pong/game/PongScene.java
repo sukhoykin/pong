@@ -67,28 +67,28 @@ public class PongScene extends EntityScene {
 					double speedRate = getCosDistributedInRange(paddleDeviationY, speedRateRange);
 					double bounceSpeed = getLimitedBallSpeed(ball.getVelocity().getMagnitude() * speedRate);
 
-					double bounceDirectionX = collision.isLeft() ? 1 : -1;
-
-					double bounceVelocityX = paddle.getHeight() / bounceAngleMax.getY() * bounceAngleMax.getX() / 2;
-					double bounceVelocityY = paddleCollisionY - paddle.getHeight() / 2;
-
-					ball.getVelocity().set(bounceVelocityX * bounceDirectionX, bounceVelocityY);
-					ball.getVelocity().scale(bounceSpeed);
+//					double bounceDirectionX = collision.isLeft() ? 1 : -1;
+//
+//					double bounceVelocityX = paddle.getHeight() / bounceAngleMax.getY() * bounceAngleMax.getX() / 2;
+//					double bounceVelocityY = paddleCollisionY - paddle.getHeight() / 2;
+//
+//					ball.getVelocity().set(bounceVelocityX * bounceDirectionX, bounceVelocityY);
+//					ball.getVelocity().scale(bounceSpeed);
 
 				} else {
 
-					if (collision.isBottom()) {
-
-						if (ball.getVelocity().getY() < 0) {
-							ball.getVelocity().reflectY();
-						}
-
-					} else {
-
-						if (ball.getVelocity().getY() > 0) {
-							ball.getVelocity().reflectY();
-						}
-					}
+//					if (collision.isBottom()) {
+//
+//						if (ball.getVelocity().getY() < 0) {
+//							ball.getVelocity().reflectY();
+//						}
+//
+//					} else {
+//
+//						if (ball.getVelocity().getY() > 0) {
+//							ball.getVelocity().reflectY();
+//						}
+//					}
 
 					ball.getVelocity().reflectX();
 					ball.getVelocity().add(paddle.getVelocity().getMultiplication(0.6));
@@ -137,27 +137,27 @@ public class PongScene extends EntityScene {
 
 		double x, y;
 
-		if (collision.isHorizontal()) {
-
-			y = ball.getPosition().getY();
-
-			if (collision.isLeft()) {
-				x = ball.getPosition().getX() + collision.getDimension().getX();
-			} else {
-				x = ball.getPosition().getX() - collision.getDimension().getX();
-			}
-
-		} else {
-
-			x = ball.getPosition().getX();
-
-			if (collision.isBottom()) {
-				y = ball.getPosition().getY() + collision.getDimension().getY();
-			} else {
-				y = ball.getPosition().getY() - collision.getDimension().getY();
-			}
-		}
-
-		ball.getPosition().set(x, y);
+//		if (collision.isHorizontal()) {
+//
+//			y = ball.getPosition().getY();
+//
+//			if (collision.isLeft()) {
+//				x = ball.getPosition().getX() + collision.getDimension().getX();
+//			} else {
+//				x = ball.getPosition().getX() - collision.getDimension().getX();
+//			}
+//
+//		} else {
+//
+//			x = ball.getPosition().getX();
+//
+//			if (collision.isBottom()) {
+//				y = ball.getPosition().getY() + collision.getDimension().getY();
+//			} else {
+//				y = ball.getPosition().getY() - collision.getDimension().getY();
+//			}
+//		}
+//
+//		ball.getPosition().set(x, y);
 	}
 }

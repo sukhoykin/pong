@@ -42,7 +42,7 @@ public class Paddle extends Entity {
 
 	public void stop() {
 
-		if (getVelocity().getY() != 0) {
+		if (isMoving()) {
 			getVelocity().set(0, 0);
 		}
 	}

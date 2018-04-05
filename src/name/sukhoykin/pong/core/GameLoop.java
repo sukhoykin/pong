@@ -10,7 +10,7 @@ package name.sukhoykin.pong.core;
  * 
  * @author vadim
  */
-public class Loop implements Runnable {
+public class GameLoop implements Runnable {
 
 	private long dt;
 
@@ -25,13 +25,13 @@ public class Loop implements Runnable {
 	private Scene scene;
 
 	private long benchmark;
-	private LoopState state;
+	private GameLoopState state;
 
-	public Loop(int fps) {
+	public GameLoop(int fps) {
 		dt = 1000 / fps;
 	}
 
-	public LoopState getState() {
+	public GameLoopState getState() {
 		return state;
 	}
 
@@ -43,7 +43,7 @@ public class Loop implements Runnable {
 
 		if (suspend) {
 
-			scene.loop = this;
+			scene.gameLoop = this;
 
 			this.scene = scene;
 			resume();
@@ -56,7 +56,7 @@ public class Loop implements Runnable {
 		time = 0;
 		start = now();
 
-		state = new LoopState();
+		state = new GameLoopState();
 		state.stepTime = dt;
 
 		while (!suspend) {

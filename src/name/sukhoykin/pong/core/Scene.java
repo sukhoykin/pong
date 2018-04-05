@@ -14,7 +14,7 @@ public class Scene implements KeyListener, Input {
 	public final static int WIDTH = 1100;
 	public final static int HEIGHT = 760;
 
-	Loop loop;
+	GameLoop gameLoop;
 
 	private Canvas canvas;
 
@@ -29,8 +29,8 @@ public class Scene implements KeyListener, Input {
 		canvas.createBufferStrategy(2);
 	}
 
-	public Loop getGameLoop() {
-		return loop;
+	public GameLoop getGameLoop() {
+		return gameLoop;
 	}
 
 	public boolean isRenderState() {
@@ -38,7 +38,12 @@ public class Scene implements KeyListener, Input {
 	}
 
 	public void addSprite(Sprite sprite) {
+		
 		sprites.add(sprite);
+		
+		if (sprite instanceof Entity) {
+			((Entity) sprite).scene = this;
+		}
 	}
 
 	public void removeSprite(Sprite sprite) {

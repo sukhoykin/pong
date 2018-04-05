@@ -3,7 +3,7 @@ package name.sukhoykin.pong.core;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class LoopState {
+public class GameLoopState {
 
 	public long simulationTime;
 	public long updateFrame;

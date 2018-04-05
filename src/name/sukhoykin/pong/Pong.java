@@ -7,7 +7,7 @@ import java.util.logging.LogManager;
 
 import javax.swing.JFrame;
 
-import name.sukhoykin.pong.core.Loop;
+import name.sukhoykin.pong.core.GameLoop;
 import name.sukhoykin.pong.core.Scene;
 import name.sukhoykin.pong.game.PongScene;
 
@@ -29,7 +29,7 @@ public class Pong implements WindowListener {
 	private JFrame frame = new JFrame();
 	private Canvas canvas = new Canvas();
 
-	private Loop game = new Loop(FPS);
+	private GameLoop game = new GameLoop(FPS);
 	private Scene scene;
 
 	public Pong() {
@@ -41,11 +41,11 @@ public class Pong implements WindowListener {
 		canvas.setIgnoreRepaint(true);
 		canvas.setSize(Scene.WIDTH, Scene.HEIGHT);
 
-		frame.addWindowListener(this);
-
 		frame.add(canvas);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
+
+		frame.addWindowListener(this);
 	}
 
 	public void start() {
