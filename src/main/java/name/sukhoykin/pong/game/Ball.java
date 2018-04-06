@@ -11,7 +11,6 @@ import name.sukhoykin.pong.core.Scene;
 public class Ball extends Entity {
 
 	private double size = 13;
-
 	private Random random = new Random();
 
 	public Ball() {
@@ -69,14 +68,6 @@ public class Ball extends Entity {
 		if (getY() + size > Scene.HEIGHT) {
 			getPosition().set(getX(), Scene.HEIGHT - size);
 			getVelocity().reflectY();
-		}
-
-		if (getX() > Scene.WIDTH) {
-			getPosition().set(0, getY());
-		}
-
-		if (getX() + getWidth() < 0) {
-			getPosition().set(Scene.WIDTH, getY());
 		}
 	}
 

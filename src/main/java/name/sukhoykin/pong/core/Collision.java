@@ -2,8 +2,6 @@ package name.sukhoykin.pong.core;
 
 public class Collision {
 
-	Entity entity;
-
 	private Vector position = new Vector();
 	private Vector dimension = new Vector();
 

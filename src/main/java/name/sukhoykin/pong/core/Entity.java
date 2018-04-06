@@ -52,7 +52,7 @@ public abstract class Entity implements Sprite {
 		return velocity;
 	}
 
-	public Collision isCollideWith(Entity entity) {
+	public Collision getCollisionWith(Entity entity) {
 
 		ix.set(0, 0);
 		iy.set(0, 0);
@@ -61,8 +61,6 @@ public abstract class Entity implements Sprite {
 		intersection(getY(), getHeightY(), entity.getY(), entity.getHeightY(), iy);
 
 		if (ix.getY() > 0 && iy.getY() > 0) {
-
-			collision.entity = this;
 
 			collision.getPosition().set(ix.getX(), iy.getX());
 			collision.getDimension().set(ix.getY(), iy.getY());

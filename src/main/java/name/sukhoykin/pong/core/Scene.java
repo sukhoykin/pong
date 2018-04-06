@@ -11,8 +11,8 @@ import java.util.List;
 
 public class Scene implements KeyListener, Input {
 
-	public final static int WIDTH = 1100;
-	public final static int HEIGHT = 760;
+	public final static int WIDTH = 960;
+	public final static int HEIGHT = 655;
 
 	GameLoop gameLoop;
 

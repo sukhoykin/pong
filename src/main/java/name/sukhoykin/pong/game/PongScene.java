@@ -3,7 +3,7 @@ package name.sukhoykin.pong.game;
 import java.awt.Canvas;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import name.sukhoykin.pong.core.Collision;
@@ -20,16 +20,19 @@ public class PongScene extends Scene {
 	public static final double PADDLE_SPEED = BALL_SPEED_MAX * 0.8;
 	public static final double PADDLE_PADDING = 35;
 
-	private Vector speedRateRange = new Vector(0.9, 1.35);
-	private Vector bounceAngleMax = new Vector(1, 0.9);
+	private final Vector speedRateRange = new Vector(0.9, 1.35);
+	private final Vector bounceAngleMax = new Vector(1, 0.9);
 
-	private Ball ball = new Ball();
+	private final Ball ball = new Ball();
 
-	// private List<Paddle> paddles = Arrays.asList(new Player(), new Enemy(ball));
-	private List<Enemy> paddles = Arrays.asList(new Enemy(ball), new Enemy(ball));
+	private Paddle leftPaddle = new Player();
+	private Paddle rightPaddle = new Enemy(ball);
 
-	private Paddle leftPaddle = paddles.get(0);
-	private Paddle rightPaddle = paddles.get(1);
+	private List<Paddle> paddles = Arrays.asList(leftPaddle, rightPaddle);
+
+	private PongState state = PongState.PLAY;
+
+	private long roundPauseStart;
 
 	public PongScene(Canvas canvas) {
 
@@ -50,11 +53,37 @@ public class PongScene extends Scene {
 	@Override
 	public void update(long dt) {
 
+		switch (state) {
+
+		case PLAY:
+			updatePlay(dt);
+			break;
+
+		case ROUND_PAUSE:
+			updateRoundPause(dt);
+			break;
+		}
+	}
+
+	public PongState getState() {
+		return state;
+	}
+
+	private void updatePlay(long dt) {
+
 		super.update(dt);
+
+		if (ball.getX() > Scene.WIDTH || ball.getX() + ball.getWidth() < 0) {
+
+			ball.getVelocity().set(0, 0);
+
+			roundPauseStart = System.currentTimeMillis();
+			state = PongState.ROUND_PAUSE;
+		}
 
 		for (Paddle paddle : paddles) {
 
-			Collision collision = ball.isCollideWith(paddle);
+			Collision collision = ball.getCollisionWith(paddle);
 
 			if (collision != null) {
 
@@ -66,42 +95,40 @@ public class PongScene extends Scene {
 					double speedRate = getCosDistributedInRange(paddleDeviationY, speedRateRange);
 					double bounceSpeed = getLimitedBallSpeed(ball.getVelocity().getMagnitude() * speedRate);
 
-					// double bounceDirectionX = collision.isLeft() ? 1 : -1;
-					//
-					// double bounceVelocityX = paddle.getHeight() / bounceAngleMax.getY() *
-					// bounceAngleMax.getX() / 2;
-					// double bounceVelocityY = paddleCollisionY - paddle.getHeight() / 2;
-					//
-					// ball.getVelocity().set(bounceVelocityX * bounceDirectionX, bounceVelocityY);
-					// ball.getVelocity().scale(bounceSpeed);
+					double bounceDirectionX = paddle.equals(leftPaddle) ? 1 : -1;
+
+					double bounceVelocityX = paddle.getHeight() / bounceAngleMax.getY() * bounceAngleMax.getX() / 2;
+					double bounceVelocityY = paddleCollisionY - paddle.getHeight() / 2;
+
+					ball.getVelocity().set(bounceVelocityX * bounceDirectionX, bounceVelocityY);
+					ball.getVelocity().scale(bounceSpeed);
 
 				} else {
 
-					// if (collision.isBottom()) {
-					//
-					// if (ball.getVelocity().getY() < 0) {
-					// ball.getVelocity().reflectY();
-					// }
-					//
-					// } else {
-					//
-					// if (ball.getVelocity().getY() > 0) {
-					// ball.getVelocity().reflectY();
-					// }
-					// }
+					ball.getVelocity().add(new Vector(0, new Random().nextInt(100)));
 
 					ball.getVelocity().reflectX();
-					ball.getVelocity().add(paddle.getVelocity().getMultiplication(0.6));
+					ball.getVelocity().reflectY();
+
+					ball.getVelocity().add(paddle.getVelocity().getMultiplication(0.8));
 				}
 
-				if (log.isLoggable(Level.INFO)) {
-					log.info(String.format("horizontal: %b, x: %d, y: %d, speed: %d", collision.isHorizontal(),
-							(int) ball.getVelocity().getX(), (int) ball.getVelocity().getY(),
-							(int) ball.getVelocity().getMagnitude()));
-				}
+				log.info(String.format("horizontal: %b, x: %d, y: %d, speed: %d", collision.isHorizontal(),
+						(int) ball.getVelocity().getX(), (int) ball.getVelocity().getY(),
+						(int) ball.getVelocity().getMagnitude()));
 
-				pushBall(ball, collision);
+				pushBall(ball, paddle, collision);
 			}
+		}
+	}
+
+	private void updateRoundPause(long dt) {
+
+		super.update(dt);
+
+		if (System.currentTimeMillis() - roundPauseStart > 1000) {
+			ball.ready();
+			state = PongState.PLAY;
 		}
 	}
 
@@ -133,31 +160,31 @@ public class PongScene extends Scene {
 		return speed;
 	}
 
-	private void pushBall(Ball ball, Collision collision) {
+	private void pushBall(Ball ball, Paddle paddle, Collision collision) {
 
 		double x, y;
 
-		// if (collision.isHorizontal()) {
-		//
-		// y = ball.getPosition().getY();
-		//
-		// if (collision.isLeft()) {
-		// x = ball.getPosition().getX() + collision.getDimension().getX();
-		// } else {
-		// x = ball.getPosition().getX() - collision.getDimension().getX();
-		// }
-		//
-		// } else {
-		//
-		// x = ball.getPosition().getX();
-		//
-		// if (collision.isBottom()) {
-		// y = ball.getPosition().getY() + collision.getDimension().getY();
-		// } else {
-		// y = ball.getPosition().getY() - collision.getDimension().getY();
-		// }
-		// }
-		//
-		// ball.getPosition().set(x, y);
+		if (collision.isHorizontal()) {
+
+			y = ball.getPosition().getY();
+
+			if (paddle.equals(leftPaddle)) {
+				x = ball.getPosition().getX() + collision.getDimension().getX();
+			} else {
+				x = ball.getPosition().getX() - collision.getDimension().getX();
+			}
+
+		} else {
+
+			x = ball.getPosition().getX();
+
+			if (ball.isMoveUp()) {
+				y = ball.getPosition().getY() + collision.getDimension().getY();
+			} else {
+				y = ball.getPosition().getY() - collision.getDimension().getY();
+			}
+		}
+
+		ball.getPosition().set(x, y);
 	}
 }
