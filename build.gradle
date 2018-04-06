@@ -1,0 +1,5 @@
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "name.sukhoykin.pong.Pong" 

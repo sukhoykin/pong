@@ -17,11 +17,9 @@ public class Scene implements KeyListener, Input {
 	GameLoop gameLoop;
 
 	private Canvas canvas;
-
 	private List<Sprite> sprites = new ArrayList<Sprite>();
 
 	private boolean[] keyPressed = new boolean[256];
-
 	private boolean renderState = false;
 
 	public Scene(Canvas canvas) {
@@ -38,9 +36,9 @@ public class Scene implements KeyListener, Input {
 	}
 
 	public void addSprite(Sprite sprite) {
-		
+
 		sprites.add(sprite);
-		
+
 		if (sprite instanceof Entity) {
 			((Entity) sprite).scene = this;
 		}
